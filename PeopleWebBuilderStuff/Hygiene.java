@@ -7,10 +7,12 @@ public enum Hygiene {
 	 * Hygiene is nonexistant
 	 */
 	none,
+	
 	/**
 	 * Hygiene is normal
 	 */
 	normal,
+	
 	/**
 	 * Hygiene is a must
 	 */
