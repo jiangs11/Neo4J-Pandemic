@@ -1,4 +1,20 @@
-
+/**
+ * This documents different types of relationships people have
+ */
 public enum Relationships {
-	Strong, Medium, Weak
+	
+	/**
+	 * The people have a close relationship
+	 */
+	Strong,
+	
+	/**
+	 * The people have an okay relationship
+	 */
+	Medium,
+	
+	/**
+	 * The people have almost no relationship
+	 */
+	Weak
 }
