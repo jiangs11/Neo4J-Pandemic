@@ -1,6 +1,18 @@
 /**
- * This documents Hygiene with values of none, normal, and cleanFreak
+ * This documents different values of Hygiene
  */
 public enum Hygiene {
-	none, normal, cleanFreak
+	
+	/**
+	 * Hygiene is nonexistant
+	 */
+	none,
+	/**
+	 * Hygiene is normal
+	 */
+	normal,
+	/**
+	 * Hygiene is a must
+	 */
+	cleanFreak
 }
