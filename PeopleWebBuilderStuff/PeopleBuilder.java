@@ -3,26 +3,49 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class PeopleBuilder {
+	/**
+	 * Array list that will hold the people
+	 */
 	static private ArrayList<Person> peopleHolder = new ArrayList<Person>();
+	/**
+	 * Random generator
+	 */
 	static private Random rand = new Random();
 
+	/**
+	 * Get the people collection
+	 * 
+	 * @return People collection
+	 */
 	public static ArrayList<Person> getPeopleHolder() {
 		return peopleHolder;
 	}
 
+	/**
+	 * Set the people collection
+	 * 
+	 * @param peopleHolder
+	 */
 	public static void setPeopleHolder(ArrayList<Person> peopleHolder) {
 		PeopleBuilder.peopleHolder = peopleHolder;
 	}
 	//TODO Make the rest of this class
 	//TODO Check the rest of my other classes to see if I need to add stuff
 	//TODO Add faker to this class
-	//TODO Java doc all this shit
+	//TODO Java doc all this REDEACTED: Done
+	
+	/**
+	 * Start the infection process
+	 */
 	public static void startInfection() {
 		Random rand = new Random();
 		peopleHolder.get(rand.nextInt(1000));
 	}
 
 	//TODO Change the constructor used and add more params
+	/**
+	 * Generates a new person
+	 */
 	public static void generateNewPerson() {
 		Person person = new Person();
 		int numberOfFriends = rand.nextInt(10) + 1;
@@ -48,12 +71,17 @@ public class PeopleBuilder {
 		peopleHolder.add(person);
 	}
 
+	/**
+	 * Fill the list with 1,000 people
+	 */
 	public static void fillPeopleList() {
-		//Please only call this once otherwise it will be another thousand people
 		generatePeople();
 		generateFriends();
 	}
 
+	/**
+	 * Generates people
+	 */
 	public static void generatePeople() {
 		int numberOfPeopleToAdd = 0;
 		while(numberOfPeopleToAdd < 1000) {
@@ -113,6 +141,9 @@ public class PeopleBuilder {
 		}
 	}
 
+	/**
+	 * Generates friends
+	 */
 	public static void generateFriends() {
 		int personNumber = 0;
 		while(personNumber < 1000) {
