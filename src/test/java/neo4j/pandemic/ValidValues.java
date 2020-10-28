@@ -7,13 +7,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Arrays;
 
 public class ValidValues {
 
 	// Lists of values
-	public final static List<String> booleans = new ArrayList<>(List.of("true", "false"));
-	public final static List<String> relStrengths = new ArrayList<>(List.of("strong", "moderate", "weak"));
-	public final static List<String> masks = new ArrayList<>(List.of("none", "level3", "level2", "level1"));
+	public final static List<String> booleans = new ArrayList<>(Arrays.asList("true", "false"));
+	public final static List<String> relStrengths = new ArrayList<>(Arrays.asList("strong", "moderate", "weak"));
+	public final static List<String> masks = new ArrayList<>(Arrays.asList("none", "level3", "level2", "level1"));
+//	public final static List<String> booleans = new ArrayList<>(List.of("true", "false"));
+//	public final static List<String> relStrengths = new ArrayList<>(List.of("strong", "moderate", "weak"));
+//	public final static List<String> masks = new ArrayList<>(List.of("none", "level3", "level2", "level1"));
 	
 	// Populate Map
 	public final static Map<Attribute, List<String>> keyValues;
