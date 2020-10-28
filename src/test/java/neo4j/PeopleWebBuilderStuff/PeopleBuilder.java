@@ -1,8 +1,13 @@
 package neo4j.PeopleWebBuilderStuff;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
+
+import com.github.javafaker.Faker;
 
 public class PeopleBuilder {
 	/**
@@ -13,7 +18,22 @@ public class PeopleBuilder {
 	 * Random generator
 	 */
 	static private Random rand = new Random();
-
+	
+	/*
+	 * Starts the project
+	 */
+	public static void start() {
+		fillPeopleList();
+		startInfection();
+	}
+	
+	/*
+	 * Empties the list
+	 */
+	public static void emptyList() {
+		peopleHolder = new ArrayList<Person>();
+	}
+	
 	/**
 	 * Get the people collection
 	 * 
@@ -31,25 +51,74 @@ public class PeopleBuilder {
 	public static void setPeopleHolder(ArrayList<Person> peopleHolder) {
 		PeopleBuilder.peopleHolder = peopleHolder;
 	}
-	//TODO Make the rest of this class
-	//TODO Check the rest of my other classes to see if I need to add stuff
-	//TODO Add faker to this class
-	//TODO Java doc all this REDEACTED: Done
 	
 	/**
 	 * Start the infection process
 	 */
 	public static void startInfection() {
 		Random rand = new Random();
-		peopleHolder.get(rand.nextInt(1000));
+		peopleHolder.get(rand.nextInt(1000)).infect("2020-01-01");
 	}
 
-	//TODO Change the constructor used and add more params
 	/**
 	 * Generates a new person
+	 * Please do not run until you have initially started the people builder
 	 */
 	public static void generateNewPerson() {
-		Person person = new Person();
+		Faker faker = new Faker();
+		String name = faker.name().fullName();
+		Date date = faker.date().birthday(0, 100);
+		LocalDate dob = Instant.ofEpochMilli(date.getTime())
+		      .atZone(ZoneId.systemDefault())
+		      .toLocalDate();
+		Masks masks = null;
+		Hygiene hygiene = null;
+		SocialGuidelines socialGuidelines = null;
+		boolean underLyingCondition = false;
+		switch (rand.nextInt(4)) {
+		case 0:
+			masks = Masks.type1;
+			break;
+		case 1:
+			masks = Masks.type2;
+			break;
+		case 2:
+			masks = Masks.type3;
+			break;
+		case 3:
+			masks = Masks.type4;
+			break;
+		}
+		
+		switch (rand.nextInt(3)) {
+		case 0:
+			hygiene = Hygiene.none;
+			break;
+		case 1:
+			hygiene = Hygiene.normal;
+			break;
+		case 2:
+			hygiene = Hygiene.cleanFreak;
+			break;
+		}
+		
+		switch (rand.nextInt(3)) {
+		case 0:
+			socialGuidelines = SocialGuidelines.doesntFollow;
+			break;
+		case 1:
+			socialGuidelines = SocialGuidelines.kindOfFollows;
+			break;
+		case 2:
+			socialGuidelines = SocialGuidelines.follows;
+			break;
+		}
+		
+		int conditionCheck = rand.nextInt(100) + 1;
+		if(conditionCheck >=70) {
+			underLyingCondition = true;
+		}
+		Person person = new Person(name, dob, masks, hygiene, socialGuidelines, underLyingCondition);
 		int numberOfFriends = rand.nextInt(10) + 1;
 		int friendsAdded = 0;
 		while(friendsAdded < numberOfFriends) {
@@ -88,8 +157,12 @@ public class PeopleBuilder {
 		int numberOfPeopleToAdd = 0;
 		while(numberOfPeopleToAdd < 1000) {
 			//AUTOGENERATE THIS SHIT
-			String name = null;
-			LocalDate dob = LocalDate.parse("yyyy-mm-dd");
+			Faker faker = new Faker();
+			String name = faker.name().fullName();
+			Date date = faker.date().birthday(0, 100);
+			LocalDate dob = Instant.ofEpochMilli(date.getTime())
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate();
 			Masks masks = null;
 			Hygiene hygiene = null;
 			SocialGuidelines socialGuidelines = null;
@@ -140,6 +213,7 @@ public class PeopleBuilder {
 			
 			Person person = new Person(name, dob, masks, hygiene, socialGuidelines, underLyingCondition);
 			peopleHolder.add(person);
+			numberOfPeopleToAdd++;
 		}
 	}
 
@@ -175,6 +249,7 @@ public class PeopleBuilder {
 					}
 				}
 			}
+			personNumber++;
 		}
 	}
 }

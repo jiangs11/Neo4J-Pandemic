@@ -34,7 +34,7 @@ public class Person {
 	/**
 	 * The relationships between people
 	 */
-	private HashMap<Person, Relationships> relationships;
+	private HashMap<Person, Relationships> relationships = new HashMap<Person, Relationships>();
 	/**
 	 * The type of mask a person wears
 	 */
@@ -364,7 +364,7 @@ public class Person {
 	 */
 	public void addRelationship(Person person, Relationships relationship) {
 		relationships.put(person, relationship);
-		setNumberOfFriends(getNumberOfFriends() + 1);
+		person.setNumberOfFriends(person.getNumberOfFriends() + 1);
 	}
 	
 	/**
@@ -374,5 +374,34 @@ public class Person {
 	 */
 	public void updateAge(LocalDate date) {
 		age = Period.between(dob, date).getYears();
+	}
+	
+	/*
+	 * Returns the person's info
+	 * @return Returns the person's info
+	 */
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Infected ");
+		stringBuilder.append(infected);
+		stringBuilder.append(" Deceased ");
+		stringBuilder.append(deceased);
+		stringBuilder.append(" Name ");
+		stringBuilder.append(name);
+		stringBuilder.append(" DOB ");
+		stringBuilder.append(dob.toString());
+		stringBuilder.append(" Age ");
+		stringBuilder.append(age);
+		stringBuilder.append(" Mask ");
+		stringBuilder.append(masks);
+		stringBuilder.append(" Hygiene ");
+		stringBuilder.append(hygiene);
+		stringBuilder.append(" Social Guidelines ");
+		stringBuilder.append(socialGuidelines);
+		stringBuilder.append(" Underlying condition ");
+		stringBuilder.append(underLyingCondition);
+		stringBuilder.append(" Number of Friends ");
+		stringBuilder.append(numberOfFriends);
+		return stringBuilder.toString();
 	}
 }
