@@ -156,7 +156,6 @@ public class PeopleBuilder {
 	public static void generatePeople() {
 		int numberOfPeopleToAdd = 0;
 		while(numberOfPeopleToAdd < 1000) {
-			//AUTOGENERATE THIS SHIT
 			Faker faker = new Faker();
 			String name = faker.name().fullName();
 			Date date = faker.date().birthday(0, 100);
