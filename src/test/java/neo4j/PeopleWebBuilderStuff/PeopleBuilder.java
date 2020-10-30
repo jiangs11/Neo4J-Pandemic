@@ -1,10 +1,6 @@
 package neo4j.PeopleWebBuilderStuff;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import com.github.javafaker.Faker;
@@ -18,7 +14,7 @@ public class PeopleBuilder {
 	 * Random generator
 	 */
 	static private Random rand = new Random();
-	
+
 	/*
 	 * Starts the project
 	 */
@@ -26,14 +22,14 @@ public class PeopleBuilder {
 		fillPeopleList();
 		startInfection();
 	}
-	
+
 	/*
 	 * Empties the list
 	 */
 	public static void emptyList() {
 		peopleHolder = new ArrayList<Person>();
 	}
-	
+
 	/**
 	 * Get the people collection
 	 * 
@@ -51,7 +47,7 @@ public class PeopleBuilder {
 	public static void setPeopleHolder(ArrayList<Person> peopleHolder) {
 		PeopleBuilder.peopleHolder = peopleHolder;
 	}
-	
+
 	/**
 	 * Start the infection process
 	 */
@@ -67,77 +63,40 @@ public class PeopleBuilder {
 	public static void generateNewPerson() {
 		Faker faker = new Faker();
 		String name = faker.name().fullName();
-		Date date = faker.date().birthday(0, 100);
-		LocalDate dob = Instant.ofEpochMilli(date.getTime())
-		      .atZone(ZoneId.systemDefault())
-		      .toLocalDate();
 		Masks masks = null;
-		Hygiene hygiene = null;
 		SocialGuidelines socialGuidelines = null;
-		boolean underLyingCondition = false;
-		switch (rand.nextInt(4)) {
-		case 0:
-			masks = Masks.type1;
-			break;
-		case 1:
-			masks = Masks.type2;
-			break;
-		case 2:
-			masks = Masks.type3;
-			break;
-		case 3:
-			masks = Masks.type4;
-			break;
-		}
-		
-		switch (rand.nextInt(3)) {
-		case 0:
-			hygiene = Hygiene.none;
-			break;
-		case 1:
-			hygiene = Hygiene.normal;
-			break;
-		case 2:
-			hygiene = Hygiene.cleanFreak;
-			break;
-		}
-		
-		switch (rand.nextInt(3)) {
-		case 0:
-			socialGuidelines = SocialGuidelines.doesntFollow;
-			break;
-		case 1:
-			socialGuidelines = SocialGuidelines.kindOfFollows;
-			break;
-		case 2:
-			socialGuidelines = SocialGuidelines.follows;
-			break;
-		}
-		
-		int conditionCheck = rand.nextInt(100) + 1;
-		if(conditionCheck >=70) {
-			underLyingCondition = true;
-		}
-		Person person = new Person(name, dob, masks, hygiene, socialGuidelines, underLyingCondition);
-		int numberOfFriends = rand.nextInt(10) + 1;
+		//TODO Auto generate this and get probabilities
+		int age = 0;
+		boolean handWashing = false;
+		ArrayList<PreexistingCondition> healthIssues = new ArrayList<PreexistingCondition>();
+		boolean hermit = false;
+		MaskUsage maskUsage = MaskUsage.Always;
+		JobType jobType = JobType.grocery;
+		Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType);
+		int numberOfFriends = rand.nextInt(35) + 15;
 		int friendsAdded = 0;
 		while(friendsAdded < numberOfFriends) {
-			friendsAdded++;
-			Person friend = peopleHolder.get(rand.nextInt(1000));
-			Relationships relationship = null;
-			switch (rand.nextInt(3)) {
-			case 0:
-				relationship = Relationships.Weak;
-				break;
-			case 1:
-				relationship = Relationships.Medium;
-				break;
-			case 2:
-				relationship = Relationships.Strong;
-				break;
+			Person friend = peopleHolder.get(rand.nextInt(10000));
+			if(friend.getNumberOfFriends() < 50) {
+				Relationships relationship = null;
+				switch (rand.nextInt(3)) {
+				case 0:
+					relationship = Relationships.Weak;
+					break;
+				case 1:
+					relationship = Relationships.Medium;
+					break;
+				case 2:
+					relationship = Relationships.Strong;
+					break;
+				}
+				if(friend.getRelationships().containsKey(person) != true) {
+					friendsAdded++;
+					friend.addRelationship(person, relationship);
+					person.addRelationship(friend, relationship);
+				}
 			}
-			friend.addRelationship(person, relationship);
-			person.addRelationship(friend, relationship);
+
 		}
 		peopleHolder.add(person);
 	}
@@ -155,62 +114,19 @@ public class PeopleBuilder {
 	 */
 	public static void generatePeople() {
 		int numberOfPeopleToAdd = 0;
-		while(numberOfPeopleToAdd < 1000) {
+		while(numberOfPeopleToAdd < 10000) {
 			Faker faker = new Faker();
 			String name = faker.name().fullName();
-			Date date = faker.date().birthday(0, 100);
-			LocalDate dob = Instant.ofEpochMilli(date.getTime())
-			      .atZone(ZoneId.systemDefault())
-			      .toLocalDate();
 			Masks masks = null;
-			Hygiene hygiene = null;
-			SocialGuidelines socialGuidelines = null;
-			boolean underLyingCondition = false;
-			switch (rand.nextInt(4)) {
-			case 0:
-				masks = Masks.type1;
-				break;
-			case 1:
-				masks = Masks.type2;
-				break;
-			case 2:
-				masks = Masks.type3;
-				break;
-			case 3:
-				masks = Masks.type4;
-				break;
-			}
-			
-			switch (rand.nextInt(3)) {
-			case 0:
-				hygiene = Hygiene.none;
-				break;
-			case 1:
-				hygiene = Hygiene.normal;
-				break;
-			case 2:
-				hygiene = Hygiene.cleanFreak;
-				break;
-			}
-			
-			switch (rand.nextInt(3)) {
-			case 0:
-				socialGuidelines = SocialGuidelines.doesntFollow;
-				break;
-			case 1:
-				socialGuidelines = SocialGuidelines.kindOfFollows;
-				break;
-			case 2:
-				socialGuidelines = SocialGuidelines.follows;
-				break;
-			}
-			
-			int conditionCheck = rand.nextInt(100) + 1;
-			if(conditionCheck >=70) {
-				underLyingCondition = true;
-			}
-			
-			Person person = new Person(name, dob, masks, hygiene, socialGuidelines, underLyingCondition);
+			SocialGuidelines socialGuidelines = null;//20,40,40
+			//TODO Auto generate this
+			int age = 0; //percents 22, 62, 16
+			boolean handWashing = false; //percents 79, 21
+			ArrayList<PreexistingCondition> healthIssues = new ArrayList<PreexistingCondition>();
+			boolean hermit = false;//percents 81,19
+			MaskUsage maskUsage = MaskUsage.Always;//// percents 44, 28,11 4, 13
+			JobType jobType = JobType.grocery;
+			Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType);
 			peopleHolder.add(person);
 			numberOfPeopleToAdd++;
 		}
@@ -221,14 +137,14 @@ public class PeopleBuilder {
 	 */
 	public static void generateFriends() {
 		int personNumber = 0;
-		while(personNumber < 1000) {
+		while(personNumber < 10000) {
 			Person person = peopleHolder.get(personNumber);
 			int numberOfFriends = person.getNumberOfFriends();
-			int numberOfFriendsToAdd = rand.nextInt(10) + 1;
+			int numberOfFriendsToAdd = rand.nextInt(36) + 15;
 			if(numberOfFriends < numberOfFriendsToAdd) {
 				int friendsAdded = 0;
 				while(friendsAdded < numberOfFriendsToAdd - numberOfFriends) {
-					Person friend = peopleHolder.get(rand.nextInt(1000));
+					Person friend = peopleHolder.get(rand.nextInt(10000));
 					Relationships relationship = null;
 					switch (rand.nextInt(3)) {
 					case 0:
@@ -241,10 +157,12 @@ public class PeopleBuilder {
 						relationship = Relationships.Strong;
 						break;
 					}
-					if(person.getRelationships().get(friend) == null) {
-						friend.addRelationship(person, relationship);
-						person.addRelationship(friend, relationship);
-						friendsAdded++;
+					if(friend.getNumberOfFriends() < 50) {
+						if(person.getRelationships().containsKey(friend) != true) {
+							friend.addRelationship(person, relationship);
+							person.addRelationship(friend, relationship);
+							friendsAdded++;
+						}
 					}
 				}
 			}

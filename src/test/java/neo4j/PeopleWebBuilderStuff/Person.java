@@ -1,7 +1,7 @@
 package neo4j.PeopleWebBuilderStuff;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -14,11 +14,11 @@ public class Person {
 	/**
 	 * If a person is infected
 	 */
-	private boolean infected;
+	private boolean infected = false;
 	/**
 	 * If a person is deceased
 	 */
-	private boolean deceased;
+	private boolean deceased = false;
 	/**
 	 * A  person's name
 	 */
@@ -26,7 +26,6 @@ public class Person {
 	/**
 	 * A person's Date of birth
 	 */
-	private LocalDate dob;
 	/**
 	 * A person's age
 	 */
@@ -39,10 +38,13 @@ public class Person {
 	 * The type of mask a person wears
 	 */
 	private Masks masks;
+	private MaskUsage maskUsage;
 	/**
 	 * The hygiene of a person
 	 */
-	private Hygiene hygiene;
+	private boolean handWashing;
+	private boolean hermit;
+	private JobType jobType;
 	/**
 	 * The level of guidelines a person follows
 	 */
@@ -50,15 +52,15 @@ public class Person {
 	/**
 	 * The underlying conditions of a person
 	 */
-	private boolean underLyingCondition;
+	private ArrayList<PreexistingCondition> underLyingCondition;
 	/**
 	 * The date person was infected
 	 */
-	private LocalDate dateInfected;
+	private LocalDate dateInfected = null;
 	/**
 	 * If a person was previously infected
 	 */
-	private boolean preivouslyInfected;
+	private boolean preivouslyInfected = false;
 	/**
 	 * The number of friends a person has
 	 */
@@ -74,17 +76,19 @@ public class Person {
 	 * @param socialGuidlines
 	 * @param underLyingCondition
 	 */
-	public Person(String name, LocalDate birth, Masks masks, Hygiene hygiene,
-			SocialGuidelines socialGuidlines, boolean underLyingCondition) {
-		infected = false;
-		deceased = false;
+	public Person(String name, int age, Masks masks,
+			SocialGuidelines socialGuidlines, boolean handWashing, 
+			ArrayList<PreexistingCondition> healthIssues, boolean hermit,
+			MaskUsage maskUsage, JobType job) {
 		this.name = name;
-		dob = birth;
 		this.masks = masks;
-		this.hygiene = hygiene;
+		this.maskUsage = maskUsage;
 		this.socialGuidelines = socialGuidlines;
-		this.underLyingCondition = underLyingCondition;
-		updateAge(LocalDate.parse("2020-01-01"));
+		this.hermit = hermit;
+		this.age = age;
+		this.handWashing = handWashing;
+		this.underLyingCondition = healthIssues;
+		this.setJobType(job);
 	}
 
 	/**
@@ -152,19 +156,6 @@ public class Person {
 	 * 
 	 * @return Date of Birth
 	 */
-	public LocalDate getdob() {
-		return dob;
-	}
-
-	/**
-	 * Sets the date of birth
-	 * 
-	 * @param dob
-	 */
-	public void setdob(LocalDate dob) {
-		this.dob = dob;
-	}
-
 	/**
 	 * Gets the age of a person
 	 * 
@@ -182,7 +173,10 @@ public class Person {
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	
+	public void age() {
+		age++;
+	}
 	/**
 	 * Gets the person's relationships
 	 * 
@@ -206,7 +200,7 @@ public class Person {
 	 * 
 	 * @return Mask usage
 	 */
-	public Masks getMaskUsage() {
+	public Masks getMask() {
 		return masks;
 	}
 
@@ -215,27 +209,8 @@ public class Person {
 	 * 
 	 * @param maskUsage
 	 */
-	public void setMaskUsage(Masks maskUsage) {
-		this.masks = maskUsage;
-	}
-
-
-	/**
-	 * Gets the hygiene level
-	 * 
-	 * @return Hygiene
- 	 */
-	public Hygiene getHygiene() {
-		return hygiene;
-	}
-
-	/**
-	 * Sets a person's hygiene level
-	 * 
-	 * @param hygiene
-	 */
-	public void setHygiene(Hygiene hygiene) {
-		this.hygiene = hygiene;
+	public void setMask(Masks mask) {
+		this.masks = mask;
 	}
 
 	/**
@@ -261,7 +236,7 @@ public class Person {
 	 * 
 	 * @return Underlying conditions
 	 */
-	public boolean getUnderLyingCondition() {
+	public ArrayList<PreexistingCondition> getUnderLyingCondition() {
 		return underLyingCondition;
 	}
 
@@ -270,7 +245,7 @@ public class Person {
 	 * 
 	 * @param underLyingCondition
 	 */
-	public void setUnderLyingCondition(boolean underLyingCondition) {
+	public void setUnderLyingCondition(ArrayList<PreexistingCondition> underLyingCondition) {
 		this.underLyingCondition = underLyingCondition;
 	}
 
@@ -328,6 +303,38 @@ public class Person {
 		this.numberOfFriends = numberOfFriends;
 	}
 
+	public MaskUsage getMaskUsage() {
+		return maskUsage;
+	}
+
+	public void setMaskUsage(MaskUsage maskUsage) {
+		this.maskUsage = maskUsage;
+	}
+
+	public boolean isHandWashing() {
+		return handWashing;
+	}
+
+	public void setHandWashing(boolean handWashing) {
+		this.handWashing = handWashing;
+	}
+
+	public boolean isHermit() {
+		return hermit;
+	}
+
+	public void setHermit(boolean hermit) {
+		this.hermit = hermit;
+	}
+
+	public JobType getJobType() {
+		return jobType;
+	}
+
+	public void setJobType(JobType jobType) {
+		this.jobType = jobType;
+	}
+
 	/**
 	 * Infect a person
 	 * 
@@ -372,10 +379,6 @@ public class Person {
 	 * 
 	 * @param date
 	 */
-	public void updateAge(LocalDate date) {
-		age = Period.between(dob, date).getYears();
-	}
-	
 	/*
 	 * Returns the person's info
 	 * @return Returns the person's info
@@ -388,14 +391,11 @@ public class Person {
 		stringBuilder.append(deceased);
 		stringBuilder.append(" Name ");
 		stringBuilder.append(name);
-		stringBuilder.append(" DOB ");
-		stringBuilder.append(dob.toString());
 		stringBuilder.append(" Age ");
 		stringBuilder.append(age);
 		stringBuilder.append(" Mask ");
 		stringBuilder.append(masks);
 		stringBuilder.append(" Hygiene ");
-		stringBuilder.append(hygiene);
 		stringBuilder.append(" Social Guidelines ");
 		stringBuilder.append(socialGuidelines);
 		stringBuilder.append(" Underlying condition ");
