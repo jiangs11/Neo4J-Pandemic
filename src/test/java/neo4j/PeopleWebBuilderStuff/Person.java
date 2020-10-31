@@ -1,14 +1,8 @@
 package neo4j.PeopleWebBuilderStuff;
 
-<<<<<<< Updated upstream
-import java.time.LocalDate;
-import java.util.ArrayList;
-=======
 import java.util.ArrayList;
 import java.util.Date;
->>>>>>> Stashed changes
 import java.util.HashMap;
-
 
 /**
  * Person Class for neo4j project
@@ -38,7 +32,7 @@ public class Person {
 	/**
 	 * The relationships between people
 	 */
-	private HashMap<Person, Relationships> relationships = new HashMap<Person, Relationships>();
+	private HashMap<Person, String> relationships = new HashMap<Person, String>();
 	/**
 	 * The type of mask a person wears
 	 */
@@ -61,12 +55,8 @@ public class Person {
 	/**
 	 * The date person was infected
 	 */
-<<<<<<< Updated upstream
-	private LocalDate dateInfected = null;
-=======
 	private Date dateInfected = null;
 	private Date dob = null;
->>>>>>> Stashed changes
 	/**
 	 * If a person was previously infected
 	 */
@@ -75,7 +65,7 @@ public class Person {
 	 * The number of friends a person has
 	 */
 	private int numberOfFriends = 0;
-
+	private ArrayList<Integer> pidsOfFriends = new ArrayList<Integer>();
 	/**
 	 * The constructor for a person
 	 * 
@@ -89,11 +79,7 @@ public class Person {
 	public Person(String name, int age, Masks masks,
 			SocialGuidelines socialGuidlines, boolean handWashing, 
 			ArrayList<PreexistingCondition> healthIssues, boolean hermit,
-<<<<<<< Updated upstream
-			MaskUsage maskUsage, JobType job) {
-=======
 			MaskUsage maskUsage, JobType job, Date dob) {
->>>>>>> Stashed changes
 		this.name = name;
 		this.masks = masks;
 		this.maskUsage = maskUsage;
@@ -103,10 +89,7 @@ public class Person {
 		this.handWashing = handWashing;
 		this.underLyingCondition = healthIssues;
 		this.setJobType(job);
-<<<<<<< Updated upstream
-=======
 		this.dob = dob;
->>>>>>> Stashed changes
 	}
 
 	/**
@@ -200,7 +183,7 @@ public class Person {
 	 * 
 	 * @return relationships
 	 */
-	public HashMap<Person, Relationships> getRelationships() {
+	public HashMap<Person, String> getRelationships() {
 		return relationships;
 	}
 
@@ -209,7 +192,7 @@ public class Person {
 	 * 
 	 * @param relationships
 	 */
-	public void setRelationships(HashMap<Person, Relationships> relationships) {
+	public void setRelationships(HashMap<Person, String> relationships) {
 		this.relationships = relationships;
 	}
 
@@ -353,8 +336,6 @@ public class Person {
 		this.jobType = jobType;
 	}
 
-<<<<<<< Updated upstream
-=======
 	public Date getDob() {
 		return dob;
 	}
@@ -363,7 +344,14 @@ public class Person {
 		this.dob = dob;
 	}
 
->>>>>>> Stashed changes
+	public ArrayList<Integer> getPidsOfFriends() {
+		return pidsOfFriends;
+	}
+
+	public void setPidsOfFriends(ArrayList<Integer> pidsOfFriends) {
+		this.pidsOfFriends = pidsOfFriends;
+	}
+
 	/**
 	 * Infect a person
 	 * 
@@ -398,7 +386,7 @@ public class Person {
 	 * @param person
 	 * @param relationship
 	 */
-	public void addRelationship(Person person, Relationships relationship) {
+	public void addRelationship(Person person, String relationship) {
 		relationships.put(person, relationship);
 		person.setNumberOfFriends(person.getNumberOfFriends() + 1);
 	}
