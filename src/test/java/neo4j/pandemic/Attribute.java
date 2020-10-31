@@ -3,7 +3,9 @@ package neo4j.pandemic;
 public class Attribute {
 
 	public enum Property {
-		dob, infection_date, alive, creator, relationship_strength, masks
+		dob, infection_date, alive, creator, relationship_strength, masks, jobType, maskUsage,
+		socialGuidelines, preExistingConditions, infected,age, handWashing,hermit, preivouslyInfected,
+		numberOfFriends
 	}
 	
 	public enum Datatype {

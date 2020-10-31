@@ -1,7 +1,14 @@
 package neo4j.PeopleWebBuilderStuff;
 
+<<<<<<< Updated upstream
+=======
+import java.time.LocalDate;
+import java.time.ZoneId;
+>>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.Random;
+
+import org.neo4j.codegen.api.Load;
 
 import com.github.javafaker.Faker;
 
@@ -52,8 +59,11 @@ public class PeopleBuilder {
 	 * Start the infection process
 	 */
 	public static void startInfection() {
+		LocalDate localDate = LocalDate.of(2020, 01, 01);
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		Date start = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
 		Random rand = new Random();
-		peopleHolder.get(rand.nextInt(1000)).infect("2020-01-01");
+		peopleHolder.get(rand.nextInt(10000)).infect(start);
 	}
 
 	/**
@@ -63,6 +73,7 @@ public class PeopleBuilder {
 	public static void generateNewPerson() {
 		Faker faker = new Faker();
 		String name = faker.name().fullName();
+<<<<<<< Updated upstream
 		Masks masks = null;
 		SocialGuidelines socialGuidelines = null;
 		//TODO Auto generate this and get probabilities
@@ -73,6 +84,68 @@ public class PeopleBuilder {
 		MaskUsage maskUsage = MaskUsage.Always;
 		JobType jobType = JobType.grocery;
 		Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType);
+=======
+		Date dob = faker.date().birthday(0, 101);
+		Masks masks = null;
+		SocialGuidelines socialGuidelines = null;
+		int generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 20) {
+			socialGuidelines = SocialGuidelines.doesntFollow;
+		}
+		else if(generateValue <= 60) {
+			socialGuidelines = SocialGuidelines.kindOfFollows;
+		}
+		else {
+			socialGuidelines = SocialGuidelines.follows;
+		}
+		int age = 0; //percents 22, 62, 16
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 22) {
+			age = rand.nextInt(19);
+		}
+		else if(generateValue <= 84) {
+			age = rand.nextInt(47) + 19;
+		}
+		else {
+			age = rand.nextInt(36) + 65;
+		}
+		boolean handWashing = false; //percents 79, 21
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 79) {
+			handWashing = true;
+		}
+		else {
+			handWashing = false;
+		}
+		ArrayList<PreexistingCondition> healthIssues = new ArrayList<PreexistingCondition>();
+		boolean hermit = false;//percents 81,19
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 81) {
+			hermit = true;
+		}
+		else {
+			hermit = false;
+		}
+		MaskUsage maskUsage = MaskUsage.Always;//// percents 44, 28,11 4, 13
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 44) {
+			maskUsage = MaskUsage.Always;
+		}
+		else if(generateValue <= 72) {
+			maskUsage = MaskUsage.VeryOften;
+		}
+		else if(generateValue <= 83) {
+			maskUsage = MaskUsage.Someimtes;
+		}
+		else if(generateValue <= 87) {
+			maskUsage = MaskUsage.Rarely;
+		}
+		else {
+			maskUsage = MaskUsage.Never;
+		}
+		JobType jobType = JobType.grocery;
+		Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob);
+>>>>>>> Stashed changes
 		int numberOfFriends = rand.nextInt(35) + 15;
 		int friendsAdded = 0;
 		while(friendsAdded < numberOfFriends) {
@@ -106,7 +179,7 @@ public class PeopleBuilder {
 	 */
 	public static void fillPeopleList() {
 		generatePeople();
-		generateFriends();
+		//generateFriends();
 	}
 
 	/**
@@ -115,6 +188,7 @@ public class PeopleBuilder {
 	public static void generatePeople() {
 		int numberOfPeopleToAdd = 0;
 		while(numberOfPeopleToAdd < 10000) {
+<<<<<<< Updated upstream
 			Faker faker = new Faker();
 			String name = faker.name().fullName();
 			Masks masks = null;
@@ -127,6 +201,72 @@ public class PeopleBuilder {
 			MaskUsage maskUsage = MaskUsage.Always;//// percents 44, 28,11 4, 13
 			JobType jobType = JobType.grocery;
 			Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType);
+=======
+			System.out.println(numberOfPeopleToAdd);
+			int generateValue = 0;
+			Faker faker = new Faker();
+			String name = faker.name().fullName();
+			Date dob = faker.date().birthday(0, 101);
+			Masks masks = null;
+			SocialGuidelines socialGuidelines = null;//20,40,40
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 20) {
+				socialGuidelines = SocialGuidelines.doesntFollow;
+			}
+			else if(generateValue <= 60) {
+				socialGuidelines = SocialGuidelines.kindOfFollows;
+			}
+			else {
+				socialGuidelines = SocialGuidelines.follows;
+			}
+			int age = 0; //percents 22, 62, 16
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 22) {
+				age = rand.nextInt(19);
+			}
+			else if(generateValue <= 84) {
+				age = rand.nextInt(47) + 19;
+			}
+			else {
+				age = rand.nextInt(36) + 65;
+			}
+			boolean handWashing = false; //percents 79, 21
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 79) {
+				handWashing = true;
+			}
+			else {
+				handWashing = false;
+			}
+			ArrayList<PreexistingCondition> healthIssues = new ArrayList<PreexistingCondition>();
+			boolean hermit = false;//percents 81,19
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 81) {
+				hermit = true;
+			}
+			else {
+				hermit = false;
+			}
+			MaskUsage maskUsage = MaskUsage.Always;//// percents 44, 28,11 4, 13
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 44) {
+				maskUsage = MaskUsage.Always;
+			}
+			else if(generateValue <= 72) {
+				maskUsage = MaskUsage.VeryOften;
+			}
+			else if(generateValue <= 83) {
+				maskUsage = MaskUsage.Someimtes;
+			}
+			else if(generateValue <= 87) {
+				maskUsage = MaskUsage.Rarely;
+			}
+			else {
+				maskUsage = MaskUsage.Never;
+			}
+			JobType jobType = JobType.grocery;
+			Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob);
+>>>>>>> Stashed changes
 			peopleHolder.add(person);
 			numberOfPeopleToAdd++;
 		}

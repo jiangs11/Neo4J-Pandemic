@@ -1,7 +1,12 @@
 package neo4j.PeopleWebBuilderStuff;
 
+<<<<<<< Updated upstream
 import java.time.LocalDate;
 import java.util.ArrayList;
+=======
+import java.util.ArrayList;
+import java.util.Date;
+>>>>>>> Stashed changes
 import java.util.HashMap;
 
 
@@ -56,7 +61,12 @@ public class Person {
 	/**
 	 * The date person was infected
 	 */
+<<<<<<< Updated upstream
 	private LocalDate dateInfected = null;
+=======
+	private Date dateInfected = null;
+	private Date dob = null;
+>>>>>>> Stashed changes
 	/**
 	 * If a person was previously infected
 	 */
@@ -79,7 +89,11 @@ public class Person {
 	public Person(String name, int age, Masks masks,
 			SocialGuidelines socialGuidlines, boolean handWashing, 
 			ArrayList<PreexistingCondition> healthIssues, boolean hermit,
+<<<<<<< Updated upstream
 			MaskUsage maskUsage, JobType job) {
+=======
+			MaskUsage maskUsage, JobType job, Date dob) {
+>>>>>>> Stashed changes
 		this.name = name;
 		this.masks = masks;
 		this.maskUsage = maskUsage;
@@ -89,6 +103,10 @@ public class Person {
 		this.handWashing = handWashing;
 		this.underLyingCondition = healthIssues;
 		this.setJobType(job);
+<<<<<<< Updated upstream
+=======
+		this.dob = dob;
+>>>>>>> Stashed changes
 	}
 
 	/**
@@ -254,7 +272,7 @@ public class Person {
 	 * 
 	 * @return Date of infection
 	 */
-	public LocalDate getDateInfected() {
+	public Date getDateInfected() {
 		return dateInfected;
 	}
 
@@ -263,7 +281,7 @@ public class Person {
 	 * 
 	 * @param dateInfected
 	 */
-	public void setDateInfected(LocalDate dateInfected) {
+	public void setDateInfected(Date dateInfected) {
 		this.dateInfected = dateInfected;
 	}
 
@@ -335,14 +353,25 @@ public class Person {
 		this.jobType = jobType;
 	}
 
+<<<<<<< Updated upstream
+=======
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+>>>>>>> Stashed changes
 	/**
 	 * Infect a person
 	 * 
 	 * @param date
 	 */
-	public void infect(String date) {
+	public void infect(Date date) {
 		infected = true;
-		dateInfected = LocalDate.parse(date);
+		dateInfected = date;
 		preivouslyInfected = true;
 	}
 

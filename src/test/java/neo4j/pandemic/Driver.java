@@ -1,12 +1,16 @@
 package neo4j.pandemic;
 
-import org.neo4j.driver.Session;
+import java.util.ArrayList;
 
+import org.neo4j.driver.Session;
+import neo4j.PeopleWebBuilderStuff.*;
 public class Driver {
 
 	public static void main(String[] args) {
 		// Connector to the main DB server
-		
+		ArrayList<Integer> pids = new ArrayList<>();
+		PeopleBuilder.start();
+		ArrayList<Person> webOfPeople = PeopleBuilder.getPeopleHolder();
 		String bolt1 = "bolt://54.237.9.240:7687";  // Main DB Server
 		String bolt2 = "bolt://54.90.41.128:7687";  // Dedicated neo server
 		
@@ -16,9 +20,13 @@ public class Driver {
 		
 		NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
 		Session ses = nc.getDriver().session();
-		
+		int numberAdded = 1;
 		// ValidValues.showValidKeys();  // Uncomment this to see valid values
-		
+		for (Person person : webOfPeople) {
+			System.out.println(numberAdded);
+			pids.add(NeoOperations.addNode(ses, "Person", person.getName()));
+			numberAdded++;
+		}
 		// Basic Node creation - Persons and Events
 		int pid1 = NeoOperations.addNode(ses, "Person:Student", "Fred");
 		int pid2 = NeoOperations.addNode(ses, "Person:Student", "Barney");
@@ -43,7 +51,7 @@ public class Driver {
 		// Set up the KNOWS relationship between two people
 		NeoOperations.relateTwoNodes(ses, pid1, pid2, "knows");
 		NeoOperations.addPropertyToRelationship(ses, pid1, pid2, "knows", 
-				                        ValidValues.getAttribute(Attribute.Property.relationship_strength), "moderate");
+				                        ValidValues.getAttribute(Attribute.Property.relationship_strength), "medium");
 
 		NeoOperations.relateTwoNodes(ses, pid1, pid3, "knows");
 		NeoOperations.addPropertyToRelationship(ses, pid1, pid3, "knows", 

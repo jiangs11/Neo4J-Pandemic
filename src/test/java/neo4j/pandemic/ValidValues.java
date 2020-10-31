@@ -7,28 +7,49 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import neo4j.PeopleWebBuilderStuff.JobType;
+import neo4j.PeopleWebBuilderStuff.MaskUsage;
+import neo4j.PeopleWebBuilderStuff.Masks;
+import neo4j.PeopleWebBuilderStuff.Person;
+import neo4j.PeopleWebBuilderStuff.PreexistingCondition;
+import neo4j.PeopleWebBuilderStuff.Relationships;
+import neo4j.PeopleWebBuilderStuff.SocialGuidelines;
+
 import java.util.Arrays;
 
 public class ValidValues {
 
 	// Lists of values
-	public final static List<String> booleans = new ArrayList<>(Arrays.asList("true", "false"));
-	public final static List<String> relStrengths = new ArrayList<>(Arrays.asList("strong", "moderate", "weak"));
-	public final static List<String> masks = new ArrayList<>(Arrays.asList("none", "level3", "level2", "level1"));
-//	public final static List<String> booleans = new ArrayList<>(List.of("true", "false"));
-//	public final static List<String> relStrengths = new ArrayList<>(List.of("strong", "moderate", "weak"));
-//	public final static List<String> masks = new ArrayList<>(List.of("none", "level3", "level2", "level1"));
-	
+	public final static List<String> booleans = new ArrayList<String>(Arrays.asList("true", "false"));
+	public final static List<String> relStrengths = new ArrayList<String>(Arrays.asList("strong", "medium", "weak"));
+	public final static List<String> masks = new ArrayList<String>(Arrays.asList("none", "level3", "level2", "level1"));
+	public final static List<String> jobType = new ArrayList<String>(Arrays.asList("unemployed","outOfWork","remote","officeBuilding",
+			"warehouse","noPublicInteraction", "grocery,servers","teachers", "medicalWorkers"));
+	public final static List<String> maskUsage = new ArrayList<String>(Arrays.asList("always", "veryOften", "sometimes", "rarely", "never"));
+	public final static List<String> socialGuidelines = new ArrayList<String>(Arrays.asList("always", "veryOften", "sometimes", "rarely", "never"));
+	public final static List<String> preExistingConditions = new ArrayList<String>(Arrays.asList("Cancer","ChronicKidneyDisease",
+			"HeartConditions", "Obesity", "SevereObesity","SickleCellDisease", "Smoking",
+			"SolidOrganYransplantation","Type2Diabetes", "HIVOrSTD","ImmunnoDeficient","MetabolicDisorder", 
+			"LiverDisease", "NeurologicConditions", "LungDiseases", "Overweight", "Type1Diabetes"));
 	// Populate Map
 	public final static Map<Attribute, List<String>> keyValues;
 	static {
-		keyValues = new HashMap<>();
+		keyValues = new HashMap<Attribute, List<String>>();
 		keyValues.put(new Attribute(Attribute.Property.alive, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.dob, Attribute.Datatype.date), null);
 		keyValues.put(new Attribute(Attribute.Property.infection_date, Attribute.Datatype.date), null);
 		keyValues.put(new Attribute(Attribute.Property.creator, Attribute.Datatype.string), null);
 		keyValues.put(new Attribute(Attribute.Property.relationship_strength, Attribute.Datatype.string), relStrengths);
 		keyValues.put(new Attribute(Attribute.Property.masks, Attribute.Datatype.string), masks);
+		keyValues.put(new Attribute(Attribute.Property.jobType, Attribute.Datatype.string), jobType);
+		keyValues.put(new Attribute(Attribute.Property.maskUsage, Attribute.Datatype.string), maskUsage);
+		keyValues.put(new Attribute(Attribute.Property.masks, Attribute.Datatype.string), masks);
+		keyValues.put(new Attribute(Attribute.Property.infected, Attribute.Datatype.bool), booleans);
+		//Figure out how to add age
+		keyValues.put(new Attribute(Attribute.Property.handWashing, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.hermit, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.preivouslyInfected, Attribute.Datatype.bool), booleans);
 	}
 	
 	public static Attribute getAttribute(Attribute.Property field) {
