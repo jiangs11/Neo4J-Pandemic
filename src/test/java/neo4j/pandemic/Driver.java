@@ -2,8 +2,6 @@ package neo4j.pandemic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
-
 import org.neo4j.driver.Session;
 import neo4j.PeopleWebBuilderStuff.*;
 public class Driver {
@@ -22,7 +20,6 @@ public class Driver {
 
 		NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
 		Session ses = nc.getDriver().session();
-		int numberAdded = 1;
 		// ValidValues.showValidKeys();  // Uncomment this to see valid values
 		for (Person person : webOfPeople) {
 			pids.add(NeoOperations.addNode(ses, "Person", person.getName()));

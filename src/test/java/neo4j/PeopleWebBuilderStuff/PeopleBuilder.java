@@ -58,8 +58,10 @@ public class PeopleBuilder {
 		LocalDate localDate = LocalDate.of(2020, 01, 01);
 		ZoneId defaultZoneId = ZoneId.systemDefault();
 		Date start = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-		Random rand = new Random();
-		peopleHolder.get(rand.nextInt(5)).infect(start);
+		int numberToInfect = rand.nextInt(51) + 50;
+		for(; numberToInfect > 0; numberToInfect--) {
+			peopleHolder.get(rand.nextInt(10000)).infect(start);
+		}
 	}
 
 	/**
@@ -69,7 +71,7 @@ public class PeopleBuilder {
 	public static void generateNewPerson() {
 		Faker faker = new Faker();
 		String name = faker.name().fullName();
-		Date dob = faker.date().birthday(0, 101);
+		Date dob = null;
 		Masks masks = null;
 		SocialGuidelines socialGuidelines = null;
 		int generateValue = rand.nextInt(100) + 1;
@@ -86,12 +88,15 @@ public class PeopleBuilder {
 		generateValue = rand.nextInt(100) + 1;
 		if(generateValue <= 22) {
 			age = rand.nextInt(19);
+			dob = faker.date().birthday(age-1, age+1);
 		}
 		else if(generateValue <= 84) {
 			age = rand.nextInt(47) + 19;
+			dob = faker.date().birthday(age-1, age+1);
 		}
 		else {
 			age = rand.nextInt(36) + 65;
+			dob = faker.date().birthday(age-1, age+1);
 		}
 		boolean handWashing = false; //percents 79, 21
 		generateValue = rand.nextInt(100) + 1;
@@ -175,8 +180,8 @@ public class PeopleBuilder {
 			int generateValue = 0;
 			Faker faker = new Faker();
 			String name = faker.name().fullName();
-			Date dob = faker.date().birthday(0, 101);
 			Masks masks = null;
+			Date dob = null;
 			SocialGuidelines socialGuidelines = null;//20,40,40
 			generateValue = rand.nextInt(5) + 1;
 			if(generateValue <= 20) {
@@ -192,12 +197,15 @@ public class PeopleBuilder {
 			generateValue = rand.nextInt(100) + 1;
 			if(generateValue <= 22) {
 				age = rand.nextInt(19);
+				dob = faker.date().birthday(age-1, age+1);
 			}
 			else if(generateValue <= 84) {
 				age = rand.nextInt(47) + 19;
+				dob = faker.date().birthday(age-1, age+1);
 			}
 			else {
 				age = rand.nextInt(36) + 65;
+				dob = faker.date().birthday(age-1, age+1);
 			}
 			boolean handWashing = false; //percents 79, 21
 			generateValue = rand.nextInt(100) + 1;
