@@ -33,7 +33,9 @@ public class Driver {
 				int locationOfFriend = person.getPidsOfFriends().get(grabbingPerson);
 				String relation = relationship.get(webOfPeople.get(locationOfFriend));
 				NeoOperations.relateTwoNodes(ses, pids.get(i), pids.get(locationOfFriend), "knows");
-				NeoOperations.addPropertyToRelationship(ses, pids.get(i), pids.get(locationOfFriend), "knows", 
+				NeoOperations.addPropertyToRelationshipOneway(ses, pids.get(i), pids.get(locationOfFriend), "knows", 
+						ValidValues.getAttribute(Attribute.Property.relationship_strength), relation);
+				NeoOperations.addPropertyToRelationshipOneway(ses, pids.get(locationOfFriend), pids.get(i), "knows", 
 						ValidValues.getAttribute(Attribute.Property.relationship_strength), relation);
 			}
 		}
