@@ -58,10 +58,7 @@ public class PeopleBuilder {
 		LocalDate localDate = LocalDate.of(2020, 01, 01);
 		ZoneId defaultZoneId = ZoneId.systemDefault();
 		Date start = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-		int numberToInfect = rand.nextInt(51) + 50;
-		for(; numberToInfect > 0; numberToInfect--) {
-			peopleHolder.get(rand.nextInt(10000)).infect(start);
-		}
+		peopleHolder.get(rand.nextInt(1000)).infect(start);
 	}
 
 	/**
@@ -215,11 +212,11 @@ public class PeopleBuilder {
 		}
 		JobType jobType = JobType.grocery;
 		Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob);
-		int numberOfFriends = rand.nextInt(36) + 15;
+		int numberOfFriends = rand.nextInt(5) + 1;
 		int friendsAdded = 0;
 		while(friendsAdded < numberOfFriends) {
-			Person friend = peopleHolder.get(rand.nextInt(10000));
-			if(friend.getNumberOfFriends() < 50) {
+			Person friend = peopleHolder.get(rand.nextInt(1000));
+			if(friend.getNumberOfFriends() < 10) {
 				String relationship = null;
 				switch (rand.nextInt(3)) {
 				case 0:
@@ -256,7 +253,7 @@ public class PeopleBuilder {
 	 */
 	public static void generatePeople() {
 		int numberOfPeopleToAdd = 0;
-		while(numberOfPeopleToAdd < 10000) {
+		while(numberOfPeopleToAdd < 1000) {
 			System.out.println(numberOfPeopleToAdd);
 			int generateValue = 0;
 			Faker faker = new Faker();
@@ -297,6 +294,87 @@ public class PeopleBuilder {
 				handWashing = false;
 			}
 			ArrayList<PreexistingCondition> healthIssues = new ArrayList<PreexistingCondition>();
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 9) {
+				healthIssues.add(PreexistingCondition.Cancer);
+			}
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 2) {
+				healthIssues.add(PreexistingCondition.ChronicKidneyDisease);
+			}
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 12) {
+				healthIssues.add(PreexistingCondition.HeartConditions);
+			}
+			generateValue = rand.nextInt(1000000) + 1;
+			if(generateValue <= 3) {
+				healthIssues.add(PreexistingCondition.SickleCell);
+			}
+			generateValue = rand.nextInt(100) + 1;
+			if(age > 19) {
+				if(generateValue <= 40) {
+					healthIssues.add(PreexistingCondition.Obesity);
+				}
+				else {
+					generateValue = rand.nextInt(100) + 1;
+					if(generateValue <= 72) {
+						healthIssues.add(PreexistingCondition.OverWeight);
+					}
+				}
+			}
+			else if (age >= 12) {
+				if(generateValue <= 21) {
+					healthIssues.add(PreexistingCondition.Obesity);
+				}
+			}
+			else if (age >= 6) {
+				if(generateValue <= 18) {
+					healthIssues.add(PreexistingCondition.Obesity);
+				}
+			}
+			else {
+				if(generateValue <= 14) {
+					healthIssues.add(PreexistingCondition.Obesity);
+				}
+			}
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 14) {
+				healthIssues.add(PreexistingCondition.Smoking);
+			}
+			generateValue = rand.nextInt(1000000) + 1;
+			if(generateValue <= 23) {
+				healthIssues.add(PreexistingCondition.OrganTransplant);
+			}
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 15) {
+				healthIssues.add(PreexistingCondition.Type1Diabetes);
+			}
+			else {
+				generateValue = rand.nextInt(100) + 1;
+				if(generateValue <= 15) {
+					healthIssues.add(PreexistingCondition.Type2Diabetes);
+				}
+			}
+			generateValue = rand.nextInt(1000000) + 1;
+			if(generateValue <= 36) {
+				healthIssues.add(PreexistingCondition.ChronicKidneyDisease);
+			}
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 4) {
+				healthIssues.add(PreexistingCondition.ImmunnoDeficient);
+			}
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 34) {
+				healthIssues.add(PreexistingCondition.MetabolicDisorder);
+			}
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 2) {
+				healthIssues.add(PreexistingCondition.LiverDisease);
+			}
+			generateValue = rand.nextInt(10000) + 1;
+			if(generateValue <= 11) {
+				healthIssues.add(PreexistingCondition.LungDiseases);
+			}
 			boolean hermit = false;//percents 81,19
 			generateValue = rand.nextInt(100) + 1;
 			if(generateValue <= 81) {
@@ -334,14 +412,14 @@ public class PeopleBuilder {
 	 */
 	public static void generateFriends() {
 		int personNumber = 0;
-		while(personNumber < 10000) {
+		while(personNumber < 1000) {
 			Person person = peopleHolder.get(personNumber);
 			int numberOfFriends = person.getNumberOfFriends();
-			int numberOfFriendsToAdd = rand.nextInt(36) + 15;
+			int numberOfFriendsToAdd = rand.nextInt(5) + 1;
 			if(numberOfFriends < numberOfFriendsToAdd) {
 				int friendsAdded = 0;
 				while(friendsAdded < numberOfFriendsToAdd - numberOfFriends) {
-					int friendId = rand.nextInt(10000);
+					int friendId = rand.nextInt(1000);
 					Person friend = peopleHolder.get(friendId);
 					if(person.equals(friend) == false) {
 						String relationship = null;
@@ -356,7 +434,7 @@ public class PeopleBuilder {
 							relationship = "strong";
 							break;
 						}
-						if(friend.getNumberOfFriends() < 50) {
+						if(friend.getNumberOfFriends() < 10) {
 							if(person.getRelationships().containsKey(friend) != true) {
 								person.getPidsOfFriends().add(friendId);
 								friend.getPidsOfFriends().add(personNumber);
