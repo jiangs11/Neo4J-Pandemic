@@ -107,6 +107,87 @@ public class PeopleBuilder {
 			handWashing = false;
 		}
 		ArrayList<PreexistingCondition> healthIssues = new ArrayList<PreexistingCondition>();
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 9) {
+			healthIssues.add(PreexistingCondition.Cancer);
+		}
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 2) {
+			healthIssues.add(PreexistingCondition.ChronicKidneyDisease);
+		}
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 12) {
+			healthIssues.add(PreexistingCondition.HeartConditions);
+		}
+		generateValue = rand.nextInt(1000000) + 1;
+		if(generateValue <= 3) {
+			healthIssues.add(PreexistingCondition.SickleCell);
+		}
+		generateValue = rand.nextInt(100) + 1;
+		if(age > 19) {
+			if(generateValue <= 40) {
+				healthIssues.add(PreexistingCondition.Obesity);
+			}
+			else {
+				generateValue = rand.nextInt(100) + 1;
+				if(generateValue <= 72) {
+					healthIssues.add(PreexistingCondition.OverWeight);
+				}
+			}
+		}
+		else if (age >= 12) {
+			if(generateValue <= 21) {
+				healthIssues.add(PreexistingCondition.Obesity);
+			}
+		}
+		else if (age >= 6) {
+			if(generateValue <= 18) {
+				healthIssues.add(PreexistingCondition.Obesity);
+			}
+		}
+		else {
+			if(generateValue <= 14) {
+				healthIssues.add(PreexistingCondition.Obesity);
+			}
+		}
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 14) {
+			healthIssues.add(PreexistingCondition.Smoking);
+		}
+		generateValue = rand.nextInt(1000000) + 1;
+		if(generateValue <= 23) {
+			healthIssues.add(PreexistingCondition.OrganTransplant);
+		}
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 15) {
+			healthIssues.add(PreexistingCondition.Type1Diabetes);
+		}
+		else {
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 15) {
+				healthIssues.add(PreexistingCondition.Type2Diabetes);
+			}
+		}
+		generateValue = rand.nextInt(1000000) + 1;
+		if(generateValue <= 36) {
+			healthIssues.add(PreexistingCondition.ChronicKidneyDisease);
+		}
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 4) {
+			healthIssues.add(PreexistingCondition.ImmunnoDeficient);
+		}
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 34) {
+			healthIssues.add(PreexistingCondition.MetabolicDisorder);
+		}
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 2) {
+			healthIssues.add(PreexistingCondition.LiverDisease);
+		}
+		generateValue = rand.nextInt(10000) + 1;
+		if(generateValue <= 11) {
+			healthIssues.add(PreexistingCondition.LungDiseases);
+		}
 		boolean hermit = false;//percents 81,19
 		generateValue = rand.nextInt(100) + 1;
 		if(generateValue <= 81) {

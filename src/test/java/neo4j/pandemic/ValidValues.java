@@ -28,10 +28,6 @@ public class ValidValues {
 			"warehouse","noPublicInteraction", "grocery,servers","teachers", "medicalWorkers"));
 	public final static List<String> maskUsage = new ArrayList<String>(Arrays.asList("always", "veryOften", "sometimes", "rarely", "never"));
 	public final static List<String> socialGuidelines = new ArrayList<String>(Arrays.asList("always", "veryOften", "sometimes", "rarely", "never"));
-	public final static List<String> preExistingConditions = new ArrayList<String>(Arrays.asList("Cancer","ChronicKidneyDisease",
-			"HeartConditions", "Obesity", "SevereObesity","SickleCellDisease", "Smoking",
-			"SolidOrganYransplantation","Type2Diabetes", "HIVOrSTD","ImmunnoDeficient","MetabolicDisorder", 
-			"LiverDisease", "NeurologicConditions", "LungDiseases", "Overweight", "Type1Diabetes"));
 	// Populate Map
 	public final static Map<Attribute, List<String>> keyValues;
 	static {
@@ -50,6 +46,20 @@ public class ValidValues {
 		keyValues.put(new Attribute(Attribute.Property.handWashing, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.hermit, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.preivouslyInfected, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.Cancer, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.ChronicKidneyDisease, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.HeartConditions, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.HIVOrSTD, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.ImmunnoDeficient, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.LiverDisease, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.LungDiseases, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.MetabolicDisorder, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.Obesity, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.OrganTransplant, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.SickleCell, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.Smoking, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.Type1Diabetes, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.Type2Diabetes, Attribute.Datatype.bool), booleans);
 	}
 	
 	public static Attribute getAttribute(Attribute.Property field) {

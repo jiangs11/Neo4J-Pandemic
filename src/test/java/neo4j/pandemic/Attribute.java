@@ -4,8 +4,12 @@ public class Attribute {
 
 	public enum Property {
 		dob, infection_date, alive, creator, relationship_strength, masks, jobType, maskUsage,
-		socialGuidelines, preExistingConditions, infected,age, handWashing,hermit, preivouslyInfected,
-		numberOfFriends
+		socialGuidelines, infected,age, handWashing,hermit, preivouslyInfected,
+		numberOfFriends,Cancer,	ChronicKidneyDisease,
+		HeartConditions, Obesity, OverWeight,
+		Smoking,Type2Diabetes, HIVOrSTD,ImmunnoDeficient,
+		OrganTransplant,MetabolicDisorder, LiverDisease,
+		LungDiseases, Type1Diabetes,SickleCell
 	}
 	
 	public enum Datatype {
