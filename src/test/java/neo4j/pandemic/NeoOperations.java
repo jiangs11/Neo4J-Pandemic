@@ -193,7 +193,7 @@ public class NeoOperations {
 			Transaction tx = null;
 			try {
 				tx = session.beginTransaction();
-				String cmd = "MATCH (n1) - [r:" + relationship + "] - (n2) " + 
+				String cmd = "MATCH (n1) - [r:" + relationship + "] -> (n2) " + 
 						"WHERE id(n1) = " + nodeId1 + " and " +
 						"id(n2) = " + nodeId2 + " " +
 						"SET r." + key + " = '" + valueString + "' " +
