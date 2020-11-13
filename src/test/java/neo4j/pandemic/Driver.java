@@ -36,24 +36,14 @@ public class Driver {
 			int numberOfFriends = relationship.size();
 			for (int grabbingPerson = 0; grabbingPerson < numberOfFriends; grabbingPerson++) {
 				int locationOfFriend = person.getPidsOfFriends().get(grabbingPerson);
-				System.out.println(pids.get(i) + " " + pids.get(locationOfFriend));
-				if(relationshipsAdded.containsKey(locationOfFriend)) {
-					if(!relationshipsAdded.get(locationOfFriend).contains(i)) {
-						relationshipsAdded.get(i).add(locationOfFriend);
-						String relation = relationship.get(webOfPeople.get(locationOfFriend));
-						NeoOperations.relateTwoNodes(ses, pids.get(i), pids.get(locationOfFriend), "knows");
-						NeoOperations.addPropertyToRelationshipOneway(ses, pids.get(i), pids.get(locationOfFriend), "knows", 
-								ValidValues.getAttribute(Attribute.Property.relationship_strength), relation);
-					}
-				}
-				else {
-					relationshipsAdded.get(i).add(locationOfFriend);
+				if(webOfPeople.get(locationOfFriend).getRelationships() != null) {
 					String relation = relationship.get(webOfPeople.get(locationOfFriend));
 					NeoOperations.relateTwoNodes(ses, pids.get(i), pids.get(locationOfFriend), "knows");
 					NeoOperations.addPropertyToRelationshipOneway(ses, pids.get(i), pids.get(locationOfFriend), "knows", 
 							ValidValues.getAttribute(Attribute.Property.relationship_strength), relation);
 				}
 			}
+			person.setRelationships(null);
 		}
 		System.out.println("Friends done");
 		// Basic Node creation - Persons and Events
