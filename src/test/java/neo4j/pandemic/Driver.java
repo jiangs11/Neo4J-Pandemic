@@ -2,11 +2,14 @@ package neo4j.pandemic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.neo4j.cypher.internal.expressions.In;
 import org.neo4j.driver.Session;
 import neo4j.PeopleWebBuilderStuff.*;
 public class Driver {
 
 	public static void main(String[] args) {
+		//TODO Set relationships to being only one per
 		// Connector to the main DB server
 		ArrayList<Integer> pids = new ArrayList<>();
 		PeopleBuilder.start();
@@ -24,17 +27,32 @@ public class Driver {
 		for (Person person : webOfPeople) {
 			pids.add(NeoOperations.addNode(ses, "Person", person.getName()));
 		}
+		HashMap<Integer, ArrayList<Integer>> relationshipsAdded = new HashMap<>();
 		int webSize = webOfPeople.size();
 		for (int i = 0; i < webSize; i++) {
+			relationshipsAdded.put(i, new ArrayList<>());
 			Person person = webOfPeople.get(i);
 			HashMap<Person, String> relationship = person.getRelationships();
 			int numberOfFriends = relationship.size();
 			for (int grabbingPerson = 0; grabbingPerson < numberOfFriends; grabbingPerson++) {
 				int locationOfFriend = person.getPidsOfFriends().get(grabbingPerson);
-				String relation = relationship.get(webOfPeople.get(locationOfFriend));
-				NeoOperations.relateTwoNodes(ses, pids.get(i), pids.get(locationOfFriend), "knows");
-				NeoOperations.addPropertyToRelationshipOneway(ses, pids.get(i), pids.get(locationOfFriend), "knows", 
-						ValidValues.getAttribute(Attribute.Property.relationship_strength), relation);
+				System.out.println(pids.get(i) + " " + pids.get(locationOfFriend));
+				if(relationshipsAdded.containsKey(locationOfFriend)) {
+					if(!relationshipsAdded.get(locationOfFriend).contains(i)) {
+						relationshipsAdded.get(i).add(locationOfFriend);
+						String relation = relationship.get(webOfPeople.get(locationOfFriend));
+						NeoOperations.relateTwoNodes(ses, pids.get(i), pids.get(locationOfFriend), "knows");
+						NeoOperations.addPropertyToRelationshipOneway(ses, pids.get(i), pids.get(locationOfFriend), "knows", 
+								ValidValues.getAttribute(Attribute.Property.relationship_strength), relation);
+					}
+				}
+				else {
+					relationshipsAdded.get(i).add(locationOfFriend);
+					String relation = relationship.get(webOfPeople.get(locationOfFriend));
+					NeoOperations.relateTwoNodes(ses, pids.get(i), pids.get(locationOfFriend), "knows");
+					NeoOperations.addPropertyToRelationshipOneway(ses, pids.get(i), pids.get(locationOfFriend), "knows", 
+							ValidValues.getAttribute(Attribute.Property.relationship_strength), relation);
+				}
 			}
 		}
 		System.out.println("Friends done");

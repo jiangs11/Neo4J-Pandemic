@@ -173,7 +173,7 @@ public class NeoOperations {
 			}
 		}
 	}
-
+	//TODO Change this to check if a relatoinship exists
 	public static void addPropertyToRelationshipOneway(Session session, int nodeId1, int nodeId2, 
 			String relationship, Attribute attr, String value) {
 		relationship = relationship.toUpperCase();
