@@ -9,6 +9,10 @@ import java.util.Random;
 import com.github.javafaker.Faker;
 
 public class PeopleBuilder {
+	
+	// How many people to make
+	static private int personCount = 1000;
+	
 	/**
 	 * Array list that will hold the people
 	 */
@@ -58,7 +62,7 @@ public class PeopleBuilder {
 		LocalDate localDate = LocalDate.of(2020, 01, 01);
 		ZoneId defaultZoneId = ZoneId.systemDefault();
 		Date start = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-		peopleHolder.get(rand.nextInt(1000)).infect(start);
+		peopleHolder.get(rand.nextInt(personCount)).infect(start);
 	}
 
 	/**
@@ -69,7 +73,6 @@ public class PeopleBuilder {
 		Faker faker = new Faker();
 		String name = faker.name().fullName();
 		Date dob = null;
-		Masks masks = null;
 		SocialGuidelines socialGuidelines = null;
 		int generateValue = rand.nextInt(100) + 1;
 		if(generateValue <= 20) {
@@ -193,24 +196,73 @@ public class PeopleBuilder {
 		else {
 			hermit = false;
 		}
-		MaskUsage maskUsage = MaskUsage.Always;//// percents 44, 28,11 4, 13
+		MaskUsage maskUsage = MaskUsage.always;//// percents 44, 28,11 4, 13
 		generateValue = rand.nextInt(100) + 1;
 		if(generateValue <= 44) {
-			maskUsage = MaskUsage.Always;
+			maskUsage = MaskUsage.always;
 		}
 		else if(generateValue <= 72) {
-			maskUsage = MaskUsage.VeryOften;
+			maskUsage = MaskUsage.veryOften;
 		}
 		else if(generateValue <= 83) {
-			maskUsage = MaskUsage.Someimtes;
+			maskUsage = MaskUsage.sometimes;
 		}
 		else if(generateValue <= 87) {
-			maskUsage = MaskUsage.Rarely;
+			maskUsage = MaskUsage.rarely;
 		}
 		else {
-			maskUsage = MaskUsage.Never;
+			maskUsage = MaskUsage.never;
 		}
-		JobType jobType = JobType.grocery;
+		
+		Masks masks = Masks.type1;
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 55) {
+			masks = Masks.type1;
+		}
+		else if(generateValue <= 70) {
+			masks = Masks.type2;
+		}
+		else if(generateValue <= 85) {
+			masks = Masks.type3;
+		}
+		else {
+			masks = Masks.none;
+		}
+
+		JobType jobType = JobType.unemployed;
+		generateValue = rand.nextInt(100) + 1;
+		if(generateValue <= 10) {
+			jobType = JobType.unemployed;
+		}
+		else if(generateValue <= 20) {
+			jobType = JobType.outOfWork;
+		}
+		else if(generateValue <= 30) {
+			jobType = JobType.remote;
+		}
+		else if(generateValue <= 40) {
+			jobType = JobType.officeBuilding;
+		}		
+		else if(generateValue <= 50) {
+			jobType = JobType.warehouse;
+		}		
+		else if(generateValue <= 60) {
+			jobType = JobType.noPublicInteraction;
+		}		
+		else if(generateValue <= 70) {
+			jobType = JobType.grocery;
+		}		
+		else if(generateValue <= 80) {
+			jobType = JobType.restaurant;
+		}		
+		else if(generateValue <= 90) {
+			jobType = JobType.teachers;
+		}
+		else {
+			jobType = JobType.medicalWorkers;
+		}
+		
+		
 		Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob);
 		int numberOfFriends = rand.nextInt(5) + 1;
 		int friendsAdded = 0;
@@ -253,12 +305,11 @@ public class PeopleBuilder {
 	 */
 	public static void generatePeople() {
 		int numberOfPeopleToAdd = 0;
-		while(numberOfPeopleToAdd < 1000) {
+		while(numberOfPeopleToAdd < personCount) {
 			System.out.println(numberOfPeopleToAdd);
 			int generateValue = 0;
 			Faker faker = new Faker();
 			String name = faker.name().fullName();
-			Masks masks = null;
 			Date dob = null;
 			SocialGuidelines socialGuidelines = null;//20,40,40
 			generateValue = rand.nextInt(5) + 1;
@@ -383,24 +434,72 @@ public class PeopleBuilder {
 			else {
 				hermit = false;
 			}
-			MaskUsage maskUsage = MaskUsage.Always;//// percents 44, 28,11 4, 13
+			MaskUsage maskUsage = MaskUsage.always;//// percents 44, 28,11 4, 13
 			generateValue = rand.nextInt(100) + 1;
 			if(generateValue <= 44) {
-				maskUsage = MaskUsage.Always;
+				maskUsage = MaskUsage.always;
 			}
 			else if(generateValue <= 72) {
-				maskUsage = MaskUsage.VeryOften;
+				maskUsage = MaskUsage.veryOften;
 			}
 			else if(generateValue <= 83) {
-				maskUsage = MaskUsage.Someimtes;
+				maskUsage = MaskUsage.sometimes;
 			}
 			else if(generateValue <= 87) {
-				maskUsage = MaskUsage.Rarely;
+				maskUsage = MaskUsage.rarely;
 			}
 			else {
-				maskUsage = MaskUsage.Never;
+				maskUsage = MaskUsage.never;
 			}
-			JobType jobType = JobType.grocery;
+			
+			Masks masks = Masks.type1;
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 55) {
+				masks = Masks.type1;
+			}
+			else if(generateValue <= 70) {
+				masks = Masks.type2;
+			}
+			else if(generateValue <= 85) {
+				masks = Masks.type3;
+			}
+			else {
+				masks = Masks.none;
+			}
+
+			JobType jobType = JobType.unemployed;
+			generateValue = rand.nextInt(100) + 1;
+			if(generateValue <= 10) {
+				jobType = JobType.unemployed;
+			}
+			else if(generateValue <= 20) {
+				jobType = JobType.outOfWork;
+			}
+			else if(generateValue <= 30) {
+				jobType = JobType.remote;
+			}
+			else if(generateValue <= 40) {
+				jobType = JobType.officeBuilding;
+			}		
+			else if(generateValue <= 50) {
+				jobType = JobType.warehouse;
+			}		
+			else if(generateValue <= 60) {
+				jobType = JobType.noPublicInteraction;
+			}		
+			else if(generateValue <= 70) {
+				jobType = JobType.grocery;
+			}		
+			else if(generateValue <= 80) {
+				jobType = JobType.restaurant;
+			}		
+			else if(generateValue <= 90) {
+				jobType = JobType.teachers;
+			}
+			else {
+				jobType = JobType.medicalWorkers;
+			}
+			
 			Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob);
 			peopleHolder.add(person);
 			numberOfPeopleToAdd++;
@@ -412,14 +511,14 @@ public class PeopleBuilder {
 	 */
 	public static void generateFriends() {
 		int personNumber = 0;
-		while(personNumber < 1000) {
+		while(personNumber < personCount) {
 			Person person = peopleHolder.get(personNumber);
 			int numberOfFriends = person.getNumberOfFriends();
 			int numberOfFriendsToAdd = rand.nextInt(5) + 1;
 			if(numberOfFriends < numberOfFriendsToAdd) {
 				int friendsAdded = 0;
 				while(friendsAdded < numberOfFriendsToAdd - numberOfFriends) {
-					int friendId = rand.nextInt(1000);
+					int friendId = rand.nextInt(personCount);
 					Person friend = peopleHolder.get(friendId);
 					if(person.equals(friend) == false) {
 						String relationship = null;

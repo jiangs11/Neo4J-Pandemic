@@ -23,11 +23,12 @@ public class ValidValues {
 	// Lists of values
 	public final static List<String> booleans = new ArrayList<String>(Arrays.asList("true", "false"));
 	public final static List<String> relStrengths = new ArrayList<String>(Arrays.asList("strong", "medium", "weak"));
-	public final static List<String> masks = new ArrayList<String>(Arrays.asList("none", "level3", "level2", "level1"));
+	public final static List<String> masks = new ArrayList<String>(Arrays.asList("none", "type1", "type2", "type3"));
 	public final static List<String> jobType = new ArrayList<String>(Arrays.asList("unemployed","outOfWork","remote","officeBuilding",
-			"warehouse","noPublicInteraction", "grocery,servers","teachers", "medicalWorkers"));
+			"warehouse","noPublicInteraction", "grocery","restaurant","teachers", "medicalWorkers"));
 	public final static List<String> maskUsage = new ArrayList<String>(Arrays.asList("always", "veryOften", "sometimes", "rarely", "never"));
-	public final static List<String> socialGuidelines = new ArrayList<String>(Arrays.asList("always", "veryOften", "sometimes", "rarely", "never"));
+	public final static List<String> socialGuidelines = new ArrayList<String>(Arrays.asList("doesntFollow", "kindOfFollows", "follows"));
+
 	// Populate Map
 	public final static Map<Attribute, List<String>> keyValues;
 	static {
@@ -42,7 +43,10 @@ public class ValidValues {
 		keyValues.put(new Attribute(Attribute.Property.maskUsage, Attribute.Datatype.string), maskUsage);
 		keyValues.put(new Attribute(Attribute.Property.masks, Attribute.Datatype.string), masks);
 		keyValues.put(new Attribute(Attribute.Property.infected, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.socialGuidelines, Attribute.Datatype.string), socialGuidelines);
+
 		//Figure out how to add age
+		keyValues.put(new Attribute(Attribute.Property.age, Attribute.Datatype.number), null);
 		keyValues.put(new Attribute(Attribute.Property.handWashing, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.hermit, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.preivouslyInfected, Attribute.Datatype.bool), booleans);
@@ -55,6 +59,7 @@ public class ValidValues {
 		keyValues.put(new Attribute(Attribute.Property.LungDiseases, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.MetabolicDisorder, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.Obesity, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.OverWeight, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.OrganTransplant, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.SickleCell, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.Smoking, Attribute.Datatype.bool), booleans);

@@ -2,6 +2,7 @@ package neo4j.pandemic;
 
 import static org.neo4j.driver.Values.parameters;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +10,13 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Value;
+
+import neo4j.PeopleWebBuilderStuff.PreexistingCondition;
+
 import org.neo4j.driver.Transaction;
 
 public class NeoOperations {
-
+		
 	/**
 	 * Adds a node with a label and the name attribute to neo4j database.
 	 * Also sets the project to pandemic and the alive property to TRUE.

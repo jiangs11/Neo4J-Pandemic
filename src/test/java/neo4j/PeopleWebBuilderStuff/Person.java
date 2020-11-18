@@ -72,7 +72,7 @@ public class Person {
 	 * @param name
 	 * @param birth
 	 * @param masks
-	 * @param hygiene
+	 * @param handWashing
 	 * @param socialGuidlines
 	 * @param underLyingCondition
 	 */
