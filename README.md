@@ -1,10 +1,10 @@
 # Neo4J-Pandemic
 
-Update: 10/29
+Update: 11/20
 
 Let’s focus on the CORE set of what is needed.  We can expand the model as development goes on.
 
-- Build the network of people (natural network) STEVE, KODY, ALEX
+- Build the network of people (natural network) STEVE, KODY, ALEX :heavy_check_mark:
 
 Person for now
 Subclasses? Student?
@@ -19,7 +19,7 @@ Reasonably complete list of demographic attributes for Persons with their valid 
 Reasonable complete list of Person to Person relationship attributes with their valid values.
 
 
-- Set disease attributes for Persons. Maybe other, like hand washing. Mask level, other Spread/Contract factors, “social hermitcy”, fear. PROBABILITY    DAVE, AUSTIN
+- Set disease attributes for Persons. Maybe other, like hand washing. Mask level, other Spread/Contract factors, “social hermitcy”, fear. PROBABILITY    DAVE, AUSTIN :heavy_check_mark:
 
 OVERALL GOAL:
 Minimally, build PersonDefiner class with static methods to set attributes for Persons in a representative way. (You should take into account demographic attributes, like age from Group 1.)
