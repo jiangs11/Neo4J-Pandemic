@@ -49,7 +49,7 @@ public class ValidValues {
 		keyValues.put(new Attribute(Attribute.Property.age, Attribute.Datatype.number), null);
 		keyValues.put(new Attribute(Attribute.Property.handWashing, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.hermit, Attribute.Datatype.bool), booleans);
-		keyValues.put(new Attribute(Attribute.Property.preivouslyInfected, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.previouslyInfected, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.Cancer, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.ChronicKidneyDisease, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.HeartConditions, Attribute.Datatype.bool), booleans);
