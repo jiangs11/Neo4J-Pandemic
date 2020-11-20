@@ -4,7 +4,8 @@ public class Attribute {
 
 	public enum Property {
 		dob, infection_date, alive, creator, relationship_strength, masks, jobType, maskUsage,
-		socialGuidelines, infected,age, handWashing,hermit, preivouslyInfected,
+		socialGuidelines, infected,age, handWashing,
+		hermit, previouslyInfected,
 		numberOfFriends,Cancer,	ChronicKidneyDisease,
 		HeartConditions, Obesity, OverWeight,
 		Smoking,Type2Diabetes, HIVOrSTD,ImmunnoDeficient,
