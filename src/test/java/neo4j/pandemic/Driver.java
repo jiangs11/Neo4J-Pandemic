@@ -86,7 +86,7 @@ public class Driver {
 		//String bolt = bolt1;
 		String bolt = bolt3;
 
-		NeoConnector nc = new NeoConnector(bolt, "neo4j", "Christina");
+		NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
 		Session ses = nc.getDriver().session();
 		// ValidValues.showValidKeys();  // Uncomment this to see valid values
 		for (Person person : webOfPeople) {
