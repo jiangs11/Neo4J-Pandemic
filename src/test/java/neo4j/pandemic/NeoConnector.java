@@ -30,7 +30,7 @@ public class NeoConnector implements AutoCloseable
      */
 	public NeoConnector() {
 		//driver =  GraphDatabase.driver("bolt://54.237.9.240:7687", AuthTokens.basic("neo4j", "graphme"));
-		driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "Christina"));
+		driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "graphme"));
 	}
 
 	/** 
