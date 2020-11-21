@@ -80,11 +80,11 @@ public class InfectionAlgo {
 	
 	private static HashMap<MaskUsage, Double> maskUseFactor = new HashMap<MaskUsage, Double>(){
 		{
-			put(MaskUsage.Always, useAlways);
-			put(MaskUsage.VeryOften, useOften);
-			put(MaskUsage.Someimtes, useSometimes);
-			put(MaskUsage.Rarely, useRarely);
-			put(MaskUsage.Never, useNever);
+			put(MaskUsage.always, useAlways);
+			put(MaskUsage.veryOften, useOften);
+			put(MaskUsage.sometimes, useSometimes);
+			put(MaskUsage.rarely, useRarely);
+			put(MaskUsage.never, useNever);
 		}
 	};
 	
@@ -97,7 +97,7 @@ public class InfectionAlgo {
 			put(JobType.warehouse, jobWareHouse);
 			put(JobType.noPublicInteraction, jobNoInteraction);
 			put(JobType.grocery, jobGrocery);
-			put(JobType.servers, jobRestaurant);
+			put(JobType.restaurant, jobRestaurant);
 			put(JobType.teachers, jobTeachers);
 			put(JobType.medicalWorkers, jobMedical);
 		}
