@@ -261,9 +261,9 @@ public class PeopleBuilder {
 		else {
 			jobType = JobType.medicalWorkers;
 		}
-		
-		
 		Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob);
+		
+		
 		int numberOfFriends = rand.nextInt(5) + 1;
 		int friendsAdded = 0;
 		while(friendsAdded < numberOfFriends) {

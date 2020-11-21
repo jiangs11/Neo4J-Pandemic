@@ -34,15 +34,14 @@ public class ValidValues {
 	static {
 		keyValues = new HashMap<Attribute, List<String>>();
 		keyValues.put(new Attribute(Attribute.Property.alive, Attribute.Datatype.bool), booleans);
-		keyValues.put(new Attribute(Attribute.Property.dob, Attribute.Datatype.date), null);
-		keyValues.put(new Attribute(Attribute.Property.infection_date, Attribute.Datatype.date), null);
 		keyValues.put(new Attribute(Attribute.Property.creator, Attribute.Datatype.string), null);
-		keyValues.put(new Attribute(Attribute.Property.relationship_strength, Attribute.Datatype.string), relStrengths);
-		keyValues.put(new Attribute(Attribute.Property.masks, Attribute.Datatype.string), masks);
-		keyValues.put(new Attribute(Attribute.Property.jobType, Attribute.Datatype.string), jobType);
-		keyValues.put(new Attribute(Attribute.Property.maskUsage, Attribute.Datatype.string), maskUsage);
-		keyValues.put(new Attribute(Attribute.Property.masks, Attribute.Datatype.string), masks);
+		keyValues.put(new Attribute(Attribute.Property.dob, Attribute.Datatype.date), null);
 		keyValues.put(new Attribute(Attribute.Property.infected, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.infection_date, Attribute.Datatype.date), null);
+		keyValues.put(new Attribute(Attribute.Property.jobType, Attribute.Datatype.string), jobType);
+		keyValues.put(new Attribute(Attribute.Property.masks, Attribute.Datatype.string), masks);
+		keyValues.put(new Attribute(Attribute.Property.maskUsage, Attribute.Datatype.string), maskUsage);
+		keyValues.put(new Attribute(Attribute.Property.relationship_strength, Attribute.Datatype.string), relStrengths);
 		keyValues.put(new Attribute(Attribute.Property.socialGuidelines, Attribute.Datatype.string), socialGuidelines);
 
 		//Figure out how to add age
@@ -54,7 +53,7 @@ public class ValidValues {
 		keyValues.put(new Attribute(Attribute.Property.ChronicKidneyDisease, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.HeartConditions, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.HIVOrSTD, Attribute.Datatype.bool), booleans);
-		keyValues.put(new Attribute(Attribute.Property.ImmunnoDeficient, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.ImmunoDeficient, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.LiverDisease, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.LungDiseases, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.MetabolicDisorder, Attribute.Datatype.bool), booleans);

@@ -48,7 +48,7 @@ public class Driver {
 				NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.HIVOrSTD), "true");
 			}
 			if(String.valueOf(disease) == "ImmunnoDeficient") {
-				NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.ImmunnoDeficient), "true");
+				NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.ImmunoDeficient), "true");
 			}
 			if(String.valueOf(disease) == "OrganTransplant") {
 				NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.OrganTransplant), "true");
@@ -86,7 +86,7 @@ public class Driver {
 		//String bolt = bolt1;
 		String bolt = bolt3;
 
-		NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
+		NeoConnector nc = new NeoConnector(bolt, "neo4j", "Christina");
 		Session ses = nc.getDriver().session();
 		// ValidValues.showValidKeys();  // Uncomment this to see valid values
 		for (Person person : webOfPeople) {

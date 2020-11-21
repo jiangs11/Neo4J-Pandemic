@@ -8,7 +8,7 @@ public class Attribute {
 		hermit, previouslyInfected,
 		numberOfFriends,Cancer,	ChronicKidneyDisease,
 		HeartConditions, Obesity, OverWeight,
-		Smoking,Type2Diabetes, HIVOrSTD,ImmunnoDeficient,
+		Smoking,Type2Diabetes, HIVOrSTD,ImmunoDeficient,
 		OrganTransplant,MetabolicDisorder, LiverDisease,
 		LungDiseases, Type1Diabetes,SickleCell
 	}
