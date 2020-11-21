@@ -23,9 +23,6 @@ public class Person {
 	 */
 	private String name;
 	/**
-	 * A person's Date of birth
-	 */
-	/**
 	 * A person's age
 	 */
 	private int age;
