@@ -3,6 +3,7 @@ package neo4j.pandemic;
 import static org.neo4j.driver.Values.parameters;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,12 +12,13 @@ import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Value;
 
+import neo4j.PeopleWebBuilderStuff.Person;
 import neo4j.PeopleWebBuilderStuff.PreexistingCondition;
 
 import org.neo4j.driver.Transaction;
 
 public class NeoOperations {
-		
+
 	/**
 	 * Adds a node with a label and the name attribute to neo4j database.
 	 * Also sets the project to pandemic and the alive property to TRUE.
@@ -318,5 +320,82 @@ public class NeoOperations {
 		else {
 			throw new InvalidKeyException(key + " is not a valid key.");
 		}
+	}
+
+
+	/**
+	 * adds a Label to an existing node
+	 * 
+	 * @param session			the Session object from NeoConnector
+	 * @param id				the id of the node who's label is to be replaced
+	 * @param newLabel			the new label of the node
+	 */
+	public static HashMap getHealthyNeighborsOfInfectedNodes(Session session) {
+		Transaction tx = null;
+		HashMap resultsMap = new HashMap(); 
+		try {
+			/**
+			 * match (f:Person)<-[r:KNOWS]-(c:Person) 
+			 * where (c.alive = true) and (f.alive = true) 
+			 * and (c.infected = "true") and (f.infected = "false") 
+			 * return f, c, r
+			 */
+			tx = session.beginTransaction();
+			StringBuilder cmd = new StringBuilder(); 
+			cmd.append("MATCH (i:Person)-[r:KNOWS]->(h:Person) ");
+			cmd.append("where (i.alive = true) and (h.alive = true) "); 
+			cmd.append("and (i.infected = \"true\") and (h.infected = \"false\") ");
+			cmd.append("return ID(i), i.name,  i.maskUsage, i.masks, i.jobType, i.socialGuidelines, i.handWashing, i.hermit, "); 
+			cmd.append("ID(h), h.name,  h.maskUsage, h.masks, h.jobType, h.socialGuidelines, h.handWashing, h.hermit, "); 
+			cmd.append("r.relationship_strength ");
+			Result result = tx.run(cmd.toString());
+
+			System.out.println("... made query");
+			
+			HashMap infectedPeopleMap = new HashMap<>(); 
+			HashMap exposedPeopleMap = new HashMap<>();  
+			HashMap personTransmitterRelationshipMap = new HashMap<>(); 
+			Record currentRecord = null; 
+			while (result.hasNext()) {
+				currentRecord = result.next(); 
+				String exposedId = currentRecord.get("ID(h)").toString();
+				if (!exposedPeopleMap.containsKey(exposedId)) {
+					personTransmitterRelationshipMap = new HashMap<>(); 
+					String transmitterId = currentRecord.get("ID(i)").toString();
+					Person exposedPerson = pullPersonFromRecord(false, currentRecord); 
+					personTransmitterRelationshipMap.put("person", exposedPerson); 
+					personTransmitterRelationshipMap.put("transmitterId", transmitterId); 
+					personTransmitterRelationshipMap.put("relationship", currentRecord.get("r.relationship_strength").toString().replace('"', ' ').trim());
+					exposedPeopleMap.put(exposedId, personTransmitterRelationshipMap); 
+					
+					if (!infectedPeopleMap.containsKey(transmitterId)) {
+						Person infectedPerson = pullPersonFromRecord(true, currentRecord); 
+						infectedPeopleMap.put(transmitterId, infectedPerson); 
+					}
+				}
+			}
+			resultsMap.put("INFECTED", infectedPeopleMap);
+			resultsMap.put("EXPOSED", exposedPeopleMap); 
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}	
+		finally {
+			tx.close();
+		}
+		return resultsMap; 
+	}
+	
+	private static Person pullPersonFromRecord(boolean infected, Record currentRecord) {
+		Person person = new Person(); 
+		String alias = (infected ? "i" : "h"); 
+		person.setName(currentRecord.get(alias + ".name").toString().replace('"', ' ').trim());
+		person.setMask(currentRecord.get(alias + ".masks").toString().replace('"', ' ').trim());
+		person.setMaskUsage(currentRecord.get(alias + ".maskUsage").toString().replace('"', ' ').trim());
+		person.setJobType(currentRecord.get(alias + ".jobType").toString().replace('"', ' ').trim());
+		person.setSocialGuidelines(currentRecord.get(alias + ".socialGuidelines").toString().replace('"', ' ').trim());
+		person.setHandWashing(currentRecord.get(alias + ".handWashing").toString().replace('"', ' ').trim().equals("true")? true : false);
+		person.setHermit(currentRecord.get(alias + ".hermit").toString().replace('"', ' ').trim().equals("true")? true : false);
+		return person; 
 	}
 }

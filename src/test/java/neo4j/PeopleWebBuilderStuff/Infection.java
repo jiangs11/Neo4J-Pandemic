@@ -2,7 +2,14 @@ package neo4j.PeopleWebBuilderStuff;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
+
+import org.neo4j.driver.Session;
+
+import neo4j.pandemic.NeoOperations;
+
 import java.util.Random;
 
 /**
@@ -13,13 +20,13 @@ import java.util.Random;
  */
 public class Infection {
 	
+	
 	// For Checking Luck Against Risk Of Infection
 	private static Random luck = new Random();
 	
 	/**
-	 * These are all the values to weight the different factors of infection
+	 * Values to weigh the different relationship factors of infection
 	 */
-	
 	
 	// Relationship Strength Values
 	private static double relWeak = 0.2;
@@ -65,11 +72,37 @@ public class Infection {
 	private static double hermitTrue = 0.3;
 	private static double hermitFalse = 1.0;
 	
+	/**
+	 * Values to weigh the different event factors of infection
+	 */
+	private static double eventOutdoors = 0.2;
+	private static double eventIndoors = 0.8; 
+	
+	private static double ventilationUpgraded = 0.2;
+	private static double ventilationNotUpgraded = 0.8;
+
+	private static double carnivalEvent = 0.5;
+	private static double sportsEvent = 0.5;
+	private static double fleaMarketEvent = 0.7;
+	private static double weddingEvent = 0.8;
+	private static double concertEvent = 0.8;
+	private static double politicalEvent = 1;
+	
+	private static double masksEnforced = 0.5;
+	private static double masksNotEnforced= 1;
+	
+	private static double socialDistancingEvent = 0.5;
+	private static double nonSocialDistancingEvent = 1;
+	
+	private static double tempChecks = 0.5; 
+	private static double noTempChecks = 1;  
+	
+	private static double handSanitizerAvailable = 0.2;
+	private static double handSanitizerNotAvailable = .8; 
 	
 	/**
 	 * Mappings of feature categories to their respective values.
-	 */
-	
+	 */	
 	private static HashMap<Masks, Double> maskFactor = new HashMap<Masks, Double>(){
 		{
 			put(Masks.none, mType0);
@@ -140,9 +173,10 @@ public class Infection {
 		risk *= socialFactor.get(person.getSocialGuidelines());
 		risk *= person.isHandWashing() ? washTrue : washFalse;
 		risk *= person.isHermit() ? hermitTrue : hermitFalse;
+		System.out.println("risk= " + risk);
 		return risk;
 	}
-	
+
 	/**
 	 * Calculates the risk of passing an infection from a person to their contact.
 	 * @param person : infected individual
@@ -186,6 +220,57 @@ public class Infection {
 			}
 		}
 		return newInfections;
+	}
+	
+	public static void infectThroughNetwork(Session session) {
+		HashMap map = NeoOperations.getHealthyNeighborsOfInfectedNodes(session);
+		
+		HashMap infectedPeople = (HashMap)map.get("INFECTED");
+		HashMap exposedPeople = (HashMap)map.get("EXPOSED"); 
+		
+		Iterator exposedPeopleIterator = exposedPeople.entrySet().iterator(); 
+		while (exposedPeopleIterator.hasNext()) {
+            Map.Entry exposedPersonEntry= (Map.Entry)exposedPeopleIterator.next(); 
+            String exposedPersonId = exposedPersonEntry.getKey().toString(); 
+            
+            HashMap exposedPersonFieldMap = (HashMap)exposedPersonEntry.getValue();
+            
+            Person exposedPerson = (Person)exposedPersonFieldMap.get("person"); 
+            String infectedPersonId = (String)exposedPersonFieldMap.get("transmitterId");
+            String relationshipStrength = (String)exposedPersonFieldMap.get("relationship");
+            
+            String exposedPersonName = exposedPerson.getName();
+            Person infectedPerson = (Person)infectedPeople.get(infectedPersonId);
+            String infectedPersonName = infectedPerson.getName(); 
+            
+            double riskFactor = calculateInteractionRisk(exposedPerson, infectedPerson, relationshipStrength); 
+            double luckFactor = luck.nextDouble(); 
+            if (riskFactor*10 > luckFactor) {
+            	System.out.println("infected person [" + infectedPersonName + 
+            			"] HAS infected [" + exposedPersonName + "] as their risk factor was [" + riskFactor +
+            			"] and their luck factor was [" + luckFactor + "] ");
+            } else {
+            	System.out.println("      infected person [" + infectedPersonName + 
+            			"] HAS NOT infected [" + exposedPersonName + "] as their risk factor was [" + riskFactor +
+            			"] and their luck factor was [" + luckFactor + "] ");
+            }
+		}
+	}
+	
+	private static Relationships getRelationshipsEnum(String relationshipStrength) {
+		Relationships strength = null; 
+		switch(relationshipStrength) {
+		case "strong":
+			strength = Relationships.Strong; 
+			break; 
+		case "medium":
+			strength = Relationships.Medium; 
+			break; 
+		case "weak":
+			strength = Relationships.Weak; 
+			break; 
+		}
+		return strength; 
 	}
 	
 	
