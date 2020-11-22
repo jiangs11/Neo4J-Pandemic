@@ -12,8 +12,10 @@ public class Driver {
 	// Add all the attributes to the person
 	public static void addAttributes(Session ses, Integer pid, Person person) {
 
+		if (person.isInfected()) {
+			NeoOperations.addLabelToNode(ses, pid, "infected");
+		}
 		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.age), String.valueOf(person.getAge()));
-		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.infected), String.valueOf(person.isInfected()));
 		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.masks), String.valueOf(person.getMask()));
 		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.maskUsage), String.valueOf(person.getMaskUsage()));
 		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.jobType), String.valueOf(person.getJobType()));
@@ -84,7 +86,7 @@ public class Driver {
 		
 		// Uncomment the bolt assignment that you want to use
 		//String bolt = bolt1;
-		String bolt = bolt3;
+		String bolt = bolt2;
 
 		NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
 		Session ses = nc.getDriver().session();
