@@ -57,12 +57,14 @@ public class Person {
 	/**
 	 * If a person was previously infected
 	 */
-	private boolean preivouslyInfected = false;
+	private boolean previouslyInfected = false;
 	/**
 	 * The number of friends a person has
 	 */
 	private int numberOfFriends = 0;
 	private ArrayList<Integer> pidsOfFriends = new ArrayList<Integer>();
+	
+	private String id = "";
 	/**
 	 * The constructor for a person
 	 * 
@@ -93,7 +95,7 @@ public class Person {
 	 * Default constructor
 	 */
 	public Person() {
-		
+
 	}
 	/**
 	 * This checks if a person is infected
@@ -171,7 +173,7 @@ public class Person {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
+
 	public void age() {
 		age++;
 	}
@@ -211,6 +213,23 @@ public class Person {
 		this.masks = mask;
 	}
 
+	public void setMask(String mask) {
+		switch(mask) {
+		case "type1": 
+			this.masks = Masks.type1; 
+			break; 
+		case "type2":
+			this.masks = Masks.type2;
+			break; 
+		case "type3":
+			this.masks = Masks.type3; 
+			break; 
+		case "none":
+			this.masks = Masks.none; 
+			break;
+		}
+	}
+
 	/**
 	 * Gets a person's social guidelines status
 	 * 
@@ -227,6 +246,20 @@ public class Person {
 	 */
 	public void setSocialGuidelines(SocialGuidelines socialGuidelines) {
 		this.socialGuidelines = socialGuidelines;
+	}
+	
+	public void setSocialGuidelines(String socialGuidelines) {
+		switch(socialGuidelines) {
+		case "doesntFollow":
+			this.socialGuidelines = SocialGuidelines.doesntFollow; 
+			break; 
+		case "kindOfFollows":
+			this.socialGuidelines = SocialGuidelines.kindOfFollows; 
+			break; 
+		case "follows":
+			this.socialGuidelines = SocialGuidelines.follows; 
+			break; 
+		}
 	}
 
 	/**
@@ -270,8 +303,8 @@ public class Person {
 	 * 
 	 * @return Previous infection status
 	 */
-	public boolean isPreivouslyInfected() {
-		return preivouslyInfected;
+	public boolean isPreviouslyInfected() {
+		return previouslyInfected;
 	}
 
 	/**
@@ -279,8 +312,8 @@ public class Person {
 	 * 
 	 * @param preivouslyInfected
 	 */
-	public void setPreivouslyInfected(boolean preivouslyInfected) {
-		this.preivouslyInfected = preivouslyInfected;
+	public void setPreviouslyInfected(boolean previouslyInfected) {
+		this.previouslyInfected = previouslyInfected;
 	}
 
 	/**
@@ -309,6 +342,25 @@ public class Person {
 		this.maskUsage = maskUsage;
 	}
 
+	public void setMaskUsage(String maskUsage) {
+		switch(maskUsage) {
+		case "always":
+			this.maskUsage = MaskUsage.always; 
+			break; 
+		case "veryOften":
+			this.maskUsage = MaskUsage.veryOften; 
+			break; 
+		case "sometimes":
+			this.maskUsage = MaskUsage.sometimes; 
+			break; 
+		case "rarely":
+			this.maskUsage = MaskUsage.rarely; 
+			break; 
+		case "never":
+			this.maskUsage = MaskUsage.never; 
+		}
+	}
+
 	public boolean isHandWashing() {
 		return handWashing;
 	}
@@ -333,6 +385,41 @@ public class Person {
 		this.jobType = jobType;
 	}
 
+	public void setJobType(String jobType) {
+		switch(jobType) {
+		case "unemployed":
+			this.jobType = JobType.unemployed; 
+			break; 
+		case "outOfWork":
+			this.jobType = JobType.outOfWork; 
+			break; 
+		case "remote":
+			this.jobType = JobType.remote; 
+			break; 
+		case "officeBuilding":
+			this.jobType = JobType.officeBuilding; 
+			break; 
+		case "warehouse":
+			this.jobType = JobType.warehouse; 
+			break; 
+		case "noPublicInteraction":
+			this.jobType = JobType.noPublicInteraction; 
+			break; 
+		case "grocery":
+			this.jobType = JobType.grocery; 
+			break; 
+		case "restaurant":
+			this.jobType = JobType.restaurant; 
+			break; 
+		case "teachers":
+			this.jobType = JobType.teachers; 
+			break; 
+		case "medicalWorkers":
+			this.jobType = JobType.medicalWorkers; 
+			break; 
+		}
+	}
+	
 	public Date getDob() {
 		return dob;
 	}
@@ -357,7 +444,7 @@ public class Person {
 	public void infect(Date date) {
 		infected = true;
 		dateInfected = date;
-		preivouslyInfected = true;
+		previouslyInfected = true;
 	}
 
 	/**
@@ -387,7 +474,7 @@ public class Person {
 		relationships.put(person, relationship);
 		person.setNumberOfFriends(person.getNumberOfFriends() + 1);
 	}
-	
+
 	/**
 	 * Update a person's age
 	 * 
