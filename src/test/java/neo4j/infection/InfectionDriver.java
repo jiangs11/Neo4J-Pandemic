@@ -1,10 +1,11 @@
-package neo4j.PeopleWebBuilderStuff;
+package neo4j.infection;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.neo4j.driver.Session;
+
 import neo4j.pandemic.NeoConnector;
 
 public class InfectionDriver {
@@ -21,7 +22,7 @@ public class InfectionDriver {
 			//String bolt = bolt1;
 			String bolt = bolt3;
 
-			nc = new NeoConnector(bolt, "neo4j", "graphme");
+			nc = new NeoConnector(bolt, "neo4j", "Christina");
 			ses = nc.getDriver().session();
 
 			

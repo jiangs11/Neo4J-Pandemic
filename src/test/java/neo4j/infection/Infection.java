@@ -1,4 +1,4 @@
-package neo4j.PeopleWebBuilderStuff;
+package neo4j.infection;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +8,13 @@ import java.util.Set;
 
 import org.neo4j.driver.Session;
 
+import neo4j.PeopleWebBuilderStuff.JobType;
+import neo4j.PeopleWebBuilderStuff.MaskUsage;
+import neo4j.PeopleWebBuilderStuff.Masks;
+import neo4j.PeopleWebBuilderStuff.PeopleBuilder;
+import neo4j.PeopleWebBuilderStuff.Person;
+import neo4j.PeopleWebBuilderStuff.Relationships;
+import neo4j.PeopleWebBuilderStuff.SocialGuidelines;
 import neo4j.pandemic.NeoOperations;
 
 import java.util.Random;
@@ -222,6 +229,14 @@ public class Infection {
 		return newInfections;
 	}
 	
+	/**
+	 * NeoOperations.getHealthyNeighborsOfInfectedNodes to pull all of the healthy Person nodes who have 
+	 * been exposed to an infected node from db. 
+	 * Iterates through map of exposed individuals and calculates risk factor for each
+	 * If an Person object's risk factor outweighs a random luck factor, the Person is infected. 
+	 * 
+	 * @param session       Session object connecting to db
+	 */
 	public static void infectThroughNetwork(Session session) {
 		HashMap map = NeoOperations.getHealthyNeighborsOfInfectedNodes(session);
 		
@@ -245,7 +260,7 @@ public class Infection {
             
             double riskFactor = calculateInteractionRisk(exposedPerson, infectedPerson, relationshipStrength); 
             double luckFactor = luck.nextDouble(); 
-            if (riskFactor*10 > luckFactor) {
+            if (riskFactor > luckFactor) {
             	System.out.println("infected person [" + infectedPersonName + 
             			"] HAS infected [" + exposedPersonName + "] as their risk factor was [" + riskFactor +
             			"] and their luck factor was [" + luckFactor + "] ");
