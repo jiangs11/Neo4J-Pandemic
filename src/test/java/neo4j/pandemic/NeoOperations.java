@@ -324,58 +324,57 @@ public class NeoOperations {
 
 
 	/**
-	 * adds a Label to an existing node
+	 * returns a HashMap containing
+	 * - HashMap infectedPeopleMap (node id, Person) of infected individuals who have just exposed another (key: "INFECTED")
+	 * 		by entering in the neo-given id of the node, you get the Person object back
+	 * - ArrayList exposedPeopleList (node id, HashMap) of HashMaps, each inner map containing (key: EXPOSED)
+	 *   values in HashMap: 
+	 *     - String: given neo id of the node (key: "id")
+	 *     - Person: exposed person (key: "person")
+	 *     - String: relationship strength (key: "relationship")
+	 *     - String: id of infected person or "transmitter" (key: "transmitterId")
 	 * 
-	 * @param session			the Session object from NeoConnector
-	 * @param id				the id of the node who's label is to be replaced
-	 * @param newLabel			the new label of the node
+	 * @param session : the Session object from NeoConnector
 	 */
 	public static HashMap getHealthyNeighborsOfInfectedNodes(Session session) {
 		Transaction tx = null;
 		HashMap resultsMap = new HashMap(); 
 		try {
-			/**
-			 * match (f:Person)<-[r:KNOWS]-(c:Person) 
-			 * where (c.alive = true) and (f.alive = true) 
-			 * and (c.infected = "true") and (f.infected = "false") 
-			 * return f, c, r
-			 */
 			tx = session.beginTransaction();
 			StringBuilder cmd = new StringBuilder(); 
-			cmd.append("MATCH (i:Person)-[r:KNOWS]->(h:Person) ");
-			cmd.append("where (i.alive = true) and (h.alive = true) "); 
-			cmd.append("and (i.infected = \"true\") and (h.infected = \"false\") ");
+
+			cmd.append("MATCH (i:infected:Person)-[r:KNOWS]-(h:Person) ");
+			cmd.append("where not(h:infected) "); 
+			cmd.append("and  (i.alive = true) and (h.alive = true) ");
 			cmd.append("return ID(i), i.name,  i.maskUsage, i.masks, i.jobType, i.socialGuidelines, i.handWashing, i.hermit, "); 
 			cmd.append("ID(h), h.name,  h.maskUsage, h.masks, h.jobType, h.socialGuidelines, h.handWashing, h.hermit, "); 
 			cmd.append("r.relationship_strength ");
 			Result result = tx.run(cmd.toString());
-
-			System.out.println("... made query");
 			
 			HashMap infectedPeopleMap = new HashMap<>(); 
-			HashMap exposedPeopleMap = new HashMap<>();  
+			ArrayList<HashMap> exposedPeopleList = new ArrayList<>();  
 			HashMap personTransmitterRelationshipMap = new HashMap<>(); 
 			Record currentRecord = null; 
 			while (result.hasNext()) {
 				currentRecord = result.next(); 
 				String exposedId = currentRecord.get("ID(h)").toString();
-				if (!exposedPeopleMap.containsKey(exposedId)) {
 					personTransmitterRelationshipMap = new HashMap<>(); 
 					String transmitterId = currentRecord.get("ID(i)").toString();
 					Person exposedPerson = pullPersonFromRecord(false, currentRecord); 
+					personTransmitterRelationshipMap.put("id", exposedId); 
 					personTransmitterRelationshipMap.put("person", exposedPerson); 
 					personTransmitterRelationshipMap.put("transmitterId", transmitterId); 
 					personTransmitterRelationshipMap.put("relationship", currentRecord.get("r.relationship_strength").toString().replace('"', ' ').trim());
-					exposedPeopleMap.put(exposedId, personTransmitterRelationshipMap); 
+					exposedPeopleList.add(personTransmitterRelationshipMap); 
 					
 					if (!infectedPeopleMap.containsKey(transmitterId)) {
 						Person infectedPerson = pullPersonFromRecord(true, currentRecord); 
 						infectedPeopleMap.put(transmitterId, infectedPerson); 
 					}
-				}
 			}
 			resultsMap.put("INFECTED", infectedPeopleMap);
-			resultsMap.put("EXPOSED", exposedPeopleMap); 
+			resultsMap.put("EXPOSED", exposedPeopleList); 
+			
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -385,6 +384,30 @@ public class NeoOperations {
 		}
 		return resultsMap; 
 	}
+	
+	
+	/**
+	 * TIME SEQUENCING - in this update you will want to set the dateInfected
+	 * 
+	 * updates the nodes to reflect newly infected people
+	 * 
+	 * @param session   : the Session object from NeoConnector
+	 * @param idFilter  : 
+	 */
+	public static void infectNodes(Session session, String idFilter) {
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			StringBuilder cmd = new StringBuilder(); 
+			cmd.append("match(h:Person) where (ID(h) in [").append(idFilter).append("]) ");
+			cmd.append("set h:infected ");
+			tx.run(cmd.toString());
+			tx.commit(); 
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
 	
 	private static Person pullPersonFromRecord(boolean infected, Record currentRecord) {
 		Person person = new Person(); 

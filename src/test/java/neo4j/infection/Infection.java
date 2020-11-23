@@ -1,5 +1,6 @@
 package neo4j.infection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,6 +25,13 @@ import java.util.Random;
  * @author Edward Callihan
  * @author Christina Bannon
  *
+ *TODO: 
+ * - Event infecting
+ * - Maybe improve on how we determine a risk factor
+ * - How should we handle the end result, when there are no more nodes to infect?
+ * 		- Are we considering recovery time?
+ * - segment out infectThroughNetwork
+ * - Maybe we should verify each db update with a result??
  */
 public class Infection {
 	
@@ -180,7 +188,6 @@ public class Infection {
 		risk *= socialFactor.get(person.getSocialGuidelines());
 		risk *= person.isHandWashing() ? washTrue : washFalse;
 		risk *= person.isHermit() ? hermitTrue : hermitFalse;
-		System.out.println("risk= " + risk);
 		return risk;
 	}
 
@@ -205,7 +212,7 @@ public class Infection {
 	 * luck value. The newly infected people are returned in a set so their status can be changed
 	 * between time intervals.
 	 * @return set of people newly infected.
-	 */
+	 *
 	public static Set<Person> infectThruNetwork() {
 		Set<Person> newInfections = new HashSet<Person>();
 		for(Person person: PeopleBuilder.getPeopleHolder()) {
@@ -228,6 +235,7 @@ public class Infection {
 		}
 		return newInfections;
 	}
+	*/
 	
 	/**
 	 * NeoOperations.getHealthyNeighborsOfInfectedNodes to pull all of the healthy Person nodes who have 
@@ -239,56 +247,44 @@ public class Infection {
 	 */
 	public static void infectThroughNetwork(Session session) {
 		HashMap map = NeoOperations.getHealthyNeighborsOfInfectedNodes(session);
-		
-		HashMap infectedPeople = (HashMap)map.get("INFECTED");
-		HashMap exposedPeople = (HashMap)map.get("EXPOSED"); 
-		
-		Iterator exposedPeopleIterator = exposedPeople.entrySet().iterator(); 
-		while (exposedPeopleIterator.hasNext()) {
-            Map.Entry exposedPersonEntry= (Map.Entry)exposedPeopleIterator.next(); 
-            String exposedPersonId = exposedPersonEntry.getKey().toString(); 
-            
-            HashMap exposedPersonFieldMap = (HashMap)exposedPersonEntry.getValue();
-            
+		HashMap infectedPeopleMap = (HashMap)map.get("INFECTED");
+		ArrayList<HashMap> exposedPeopleList = (ArrayList)map.get("EXPOSED"); 
+        StringBuilder newlyInfectedIds = new StringBuilder();
+        String prefix = "";
+        
+		for (HashMap exposedPersonFieldMap : exposedPeopleList) {
+            String exposedPersonId = (String)exposedPersonFieldMap.get("id");        
             Person exposedPerson = (Person)exposedPersonFieldMap.get("person"); 
             String infectedPersonId = (String)exposedPersonFieldMap.get("transmitterId");
             String relationshipStrength = (String)exposedPersonFieldMap.get("relationship");
             
             String exposedPersonName = exposedPerson.getName();
-            Person infectedPerson = (Person)infectedPeople.get(infectedPersonId);
+            Person infectedPerson = (Person)infectedPeopleMap.get(infectedPersonId);
             String infectedPersonName = infectedPerson.getName(); 
             
             double riskFactor = calculateInteractionRisk(exposedPerson, infectedPerson, relationshipStrength); 
             double luckFactor = luck.nextDouble(); 
             if (riskFactor > luckFactor) {
-            	System.out.println("infected person [" + infectedPersonName + 
+            	System.out.println("-Infected person [" + infectedPersonName + 
             			"] HAS infected [" + exposedPersonName + "] as their risk factor was [" + riskFactor +
             			"] and their luck factor was [" + luckFactor + "] ");
+            	newlyInfectedIds.append(prefix);
+            	newlyInfectedIds.append(exposedPersonId);
+            	prefix = ", ";
             } else {
-            	System.out.println("      infected person [" + infectedPersonName + 
+            	System.out.println("-Infected person [" + infectedPersonName + 
             			"] HAS NOT infected [" + exposedPersonName + "] as their risk factor was [" + riskFactor +
             			"] and their luck factor was [" + luckFactor + "] ");
             }
 		}
-	}
-	
-	private static Relationships getRelationshipsEnum(String relationshipStrength) {
-		Relationships strength = null; 
-		switch(relationshipStrength) {
-		case "strong":
-			strength = Relationships.Strong; 
-			break; 
-		case "medium":
-			strength = Relationships.Medium; 
-			break; 
-		case "weak":
-			strength = Relationships.Weak; 
-			break; 
+		if (newlyInfectedIds.length() > 0) {
+			System.out.println("Updating nodes " + newlyInfectedIds.toString());
+			NeoOperations.infectNodes(session, newlyInfectedIds.toString()); 
+			System.out.println("Update complete");
+		} else {
+			System.out.print("No node updates");
 		}
-		return strength; 
 	}
-	
-	
 }
 
 	
