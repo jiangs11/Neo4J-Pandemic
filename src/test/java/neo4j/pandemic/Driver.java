@@ -22,6 +22,7 @@ public class Driver {
 		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.socialGuidelines), String.valueOf(person.getSocialGuidelines()));
 		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.handWashing), String.valueOf(person.isHandWashing()));
 		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.hermit), String.valueOf(person.isHermit()));
+		NeoOperations.addPropertyToNode(ses, pid, ValidValues.getAttribute(Attribute.Property.socialClass), String.valueOf(person.getSocialClass()));
 
 		// Underlying Conditions Array
 		for (PreexistingCondition disease: person.getUnderLyingCondition()) {

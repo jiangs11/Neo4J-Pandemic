@@ -10,7 +10,7 @@ public class Attribute {
 		HeartConditions, Obesity, OverWeight,
 		Smoking,Type2Diabetes, HIVOrSTD,ImmunoDeficient,
 		OrganTransplant,MetabolicDisorder, LiverDisease,
-		LungDiseases, Type1Diabetes,SickleCell
+		LungDiseases, Type1Diabetes,SickleCell, socialClass
 	}
 	
 	public enum Datatype {

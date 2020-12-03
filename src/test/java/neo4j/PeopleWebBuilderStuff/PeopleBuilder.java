@@ -261,7 +261,19 @@ public class PeopleBuilder {
 		else {
 			jobType = JobType.medicalWorkers;
 		}
-		Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob);
+		
+		SocialClass socialClass = SocialClass.poor;
+		generateValue = rand.nextInt(100) + 1;
+		if (generateValue <= 12) {
+			socialClass = SocialClass.poor;
+		} else if (generateValue <= 52) {
+			socialClass = SocialClass.middleClass;
+		} else if (generateValue <= 87) {
+			socialClass = SocialClass.rich;
+		} else if (generateValue <= 99) {
+			socialClass = SocialClass.onePercenter;
+		}
+		Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob, socialClass);
 		
 		
 		int numberOfFriends = rand.nextInt(5) + 1;
@@ -500,7 +512,18 @@ public class PeopleBuilder {
 				jobType = JobType.medicalWorkers;
 			}
 			
-			Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob);
+			SocialClass socialClass = SocialClass.poor;
+			generateValue = rand.nextInt(100) + 1;
+			if (generateValue <= 12) {
+				socialClass = SocialClass.poor;
+			} else if (generateValue <= 52) {
+				socialClass = SocialClass.middleClass;
+			} else if (generateValue <= 87) {
+				socialClass = SocialClass.rich;
+			} else if (generateValue <= 99) {
+				socialClass = SocialClass.onePercenter;
+			}
+			Person person = new Person(name, age, masks, socialGuidelines, handWashing, healthIssues, hermit, maskUsage, jobType, dob, socialClass);
 			peopleHolder.add(person);
 			numberOfPeopleToAdd++;
 		}
