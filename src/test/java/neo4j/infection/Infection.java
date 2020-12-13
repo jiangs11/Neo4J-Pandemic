@@ -32,9 +32,13 @@ import java.util.Random;
  * 		- Are we considering recovery time?
  * - segment out infectThroughNetwork
  * - Maybe we should verify each db update with a result??
+ * 
+ * 
+ * 
+ * https://www.wsj.com/articles/how-many-people-might-one-person-with-coronavirus-infect-11581676200
+ * https://19andme.covid19.mathematica.org/
  */
 public class Infection {
-	
 	
 	// For Checking Luck Against Risk Of Infection
 	private static Random luck = new Random();
@@ -86,6 +90,32 @@ public class Infection {
 	// Hermit Values
 	private static double hermitTrue = 0.3;
 	private static double hermitFalse = 1.0;
+	/*
+	 * Factor Weights.
+	 * 
+	 * Each set of weights describes the contribution to infection probability
+	 * from the various factors of interaction between an infected and a 
+	 * healthy person.
+	 */
+	
+	// Infection Type Weights
+	private static double airborneWT = 0.75;
+	private static double handToHandWT = 0.25;
+	
+	// Airborne Infection Weights
+	private static double maskWT = 0.5;
+	private static double jobAirWT = 0.3;
+	private static double sDistAirWT = 0.2;
+	
+	// Hand to Hand Infection Weights
+	private static double hWashWT = 0.5;
+	private static double jobHigieneWT = 0.3;
+	private static double sDistHigieneWT = 0.2;
+	
+	// Individual Health Infection Weights
+	private static double healthyWT = 0.4;
+	private static double infectedWT = 0.6;
+	
 	
 	/**
 	 * Values to weigh the different event factors of infection
@@ -172,8 +202,6 @@ public class Infection {
 		}
 	};
 	
-	// Begin Methods here
-	
 	
 	/**
 	 * Calculates the risk a person contributes to spreading the virus.
@@ -199,10 +227,40 @@ public class Infection {
 	 * @return risk value of spreading infection
 	 */
 	public static double calculateInteractionRisk(Person person, Person contact, String relationship) {
-		double behaviorMod1 = calculateBehaviorRisk(person);
-		double behaviorMod2 = calculateBehaviorRisk(contact);
+		double behaviorMod1 = personalRisk(person);
+		double behaviorMod2 = personalRisk(contact);
 		double relationshipMod = relationshipFactor.get(relationship);
 		return (behaviorMod1 + behaviorMod2) * relationshipMod;
+	}
+	
+	
+	public static double personalRisk(Person person) {
+		// Contact contribution
+		double hWashSub = 1 - (person.isHandWashing() ? washTrue : washFalse);
+		double hWashVal = hWashWT * hWashSub;
+		double jobHigieneSub = 1 - (jobTypeFactor.get(person.getJobType()));
+		double jobHigieneVal = jobHigieneWT * jobHigieneSub;
+		double sDistHigieneSub = 1 - (socialFactor.get(person.getSocialGuidelines()));
+		double sDistHigieneVal = sDistHigieneWT  * sDistHigieneSub;
+		double handToHandSub = hWashVal + jobHigieneVal + sDistHigieneVal;
+		double handToHandVal = handToHandWT * handToHandSub;
+
+		// Airborne Contribution
+		double maskSub = 1 - (maskFactor.get(person.getMask()) * maskUseFactor.get(person.getMaskUsage()));
+		double maskVal = maskWT * maskSub;
+		double jobAirSub = 1 - (jobTypeFactor.get(person.getJobType()));
+		double jobAirVal = jobAirWT * jobAirSub;
+		double sDistAirSub = 1 - (socialFactor.get(person.getSocialGuidelines()));
+		double sDistAirVal = sDistAirWT * sDistAirSub;
+		double airborneSub = maskVal + jobAirVal + sDistAirVal;
+		double airborneVal = airborneWT * airborneSub;
+
+		// Total Contribution Weight by (Infected or Healthy)
+		double infWT = person.isInfected() ? infectedWT : healthyWT;
+		double personalSub = handToHandVal + airborneVal;
+		double personalVal = infWT * personalSub;
+
+		return personalVal;
 	}
 	
 	/**
@@ -285,6 +343,12 @@ public class Infection {
 			System.out.print("No node updates");
 		}
 	}
+	
+	/*
+	private String padSpaces(String name) {
+		
+	}
+	*/
 }
 
 	
