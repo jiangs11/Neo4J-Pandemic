@@ -426,7 +426,7 @@ public class Infection {
 			double infectionDensity = infectedList.size() / totalPeople; 
 			
 			for (int j = 0; j < healthyList.size(); j++) {
-				HashMap personHashMap = (HashMap)healthyList.get(i);
+				HashMap personHashMap = (HashMap)healthyList.get(j);
 				Person person = (Person)personHashMap.get("person");
 				String personId = (String)personHashMap.get("personID");
 				double riskFactor = calculateEventRisk(person, event, eventDensity, infectionDensity);
