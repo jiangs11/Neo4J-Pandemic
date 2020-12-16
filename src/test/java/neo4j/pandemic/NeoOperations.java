@@ -505,7 +505,7 @@ public class NeoOperations {
 			buffer.append("CREATE (n:Event ");
 			buffer.append("{ name : '").append(event.getEventName()).append("', ");
 			buffer.append("project : 'pandemic', ");
-			buffer.append("eventDate : '").append(event.getEventDate().toString()).append("', ");
+			buffer.append("eventDate : '").append(event.getEventDate().getTime()).append("', ");
 			buffer.append("eventType : '").append(event.getEventTypeString()).append("', ");
 			buffer.append("eventCapacity : ").append(event.getEventCapacity()).append(", ");
 			buffer.append("venue : '").append(event.getVenueString()).append("', ");
@@ -549,7 +549,7 @@ public class NeoOperations {
 	 * @param session
 	 * @return
 	 */
-	public static ArrayList getContaminatedEvents(Session session) {
+	public static ArrayList getContaminatedEvents(Session session, Date date) {
 			Transaction tx = null;
 			ArrayList eventList = new ArrayList<>(); 
 			HashMap resultsMap = new HashMap(); 
@@ -561,8 +561,9 @@ public class NeoOperations {
 			try {
 				tx = session.beginTransaction();
 				StringBuilder cmd = new StringBuilder(); 
-				cmd.append("MATCH (i:Person:infected)-[r:ATTENDS]->(e:Event)<-[a:ATTENDS]-(h:Person) "); 
-				cmd.append("return distinct ID(e), e.name, e.eventDate, e.eventType, e.eventCapacity, e.venue, e.indoorVentilation, e.maskEnforcement, ");
+				cmd.append("MATCH (i:Person:infected)-[r:ATTENDS]->(e:Event) "); 
+				cmd.append("WHERE e.eventDate = ").append(date.getTime()).append(" ");
+				cmd.append("RETURN distinct ID(e), e.name, e.eventDate, e.eventType, e.eventCapacity, e.venue, e.indoorVentilation, e.maskEnforcement, ");
 				cmd.append("e.socialDistancing, e.tempChecks, e.handSanitizerAvailable, e.CDCApprovedCleaning");
 				Result result = tx.run(cmd.toString());
 				while (result.hasNext()) {
@@ -574,6 +575,8 @@ public class NeoOperations {
 					
 					event = new Events();
 					event.setEventName(currentEventRecord.get("e.name").toString().replace('"', ' ').trim());
+					long eventDateTime = Long.parseLong(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
+					event.setEventDate(new Date(eventDateTime));
 					//	event.setEventDate(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
 					event.setEventType(currentEventRecord.get("e.eventType").toString().replace('"', ' ').trim());
 					event.setEventCapacity(Integer.parseInt(currentEventRecord.get("e.eventCapacity").toString()));

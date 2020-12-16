@@ -1,11 +1,8 @@
 package neo4j.infection;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 import org.neo4j.driver.Session;
 
@@ -14,17 +11,11 @@ import neo4j.EventBuilder.*;
 import neo4j.PeopleWebBuilderStuff.JobType;
 import neo4j.PeopleWebBuilderStuff.MaskUsage;
 import neo4j.PeopleWebBuilderStuff.Masks;
-import neo4j.PeopleWebBuilderStuff.PeopleBuilder;
 import neo4j.PeopleWebBuilderStuff.Person;
-import neo4j.PeopleWebBuilderStuff.Relationships;
 import neo4j.PeopleWebBuilderStuff.SocialGuidelines;
 import neo4j.pandemic.NeoOperations;
 
 import java.util.Random;
-
-//enum EventPlace { indoor, outdoor; }
-//enum VentilationType { not_upgraded, upgraded; }
-//enum EventType { political, wedding, concert, flea_market, carnival, sports; }
 
 /**
  * Infection Algorithm
@@ -145,35 +136,6 @@ public class Infection {
 
 	private static double popDensityWT = 0.4;
 	private static double infDensityWT = 0.6;
-
-	/**
-	 * Values to weigh the different event factors of infection
-	 */
-	//	private static double eventOutdoors = 0.2;
-	//	private static double eventIndoors = 0.8; 
-	//	
-	//	private static double ventilationUpgraded = 0.2;
-	//	private static double ventilationNotUpgraded = 0.8;
-	//
-	//	private static double carnivalEvent = 0.5;
-	//	private static double sportsEvent = 0.5;
-	//	private static double fleaMarketEvent = 0.7;
-	//	private static double weddingEvent = 0.8;
-	//	private static double concertEvent = 0.8;
-	//	private static double politicalEvent = 1;
-	//	
-	//	private static double masksEnforced = 0.5;
-	//	private static double masksNotEnforced= 1;
-	//	
-	//	private static double socialDistancingEvent = 0.5;
-	//	private static double nonSocialDistancingEvent = 1;
-	//	
-	//	private static double tempChecks = 0.5; 
-	//	private static double noTempChecks = 1;  
-	//	
-	//	private static double handSanitizerAvailable = 0.2;
-	//	private static double handSanitizerNotAvailable = .8; 
-
 
 	/*
 	 * Event Values start here
@@ -409,8 +371,8 @@ public class Infection {
 		}
 	}
 
-	public static void infectThruEvent(Session ses) {
-		ArrayList eventList = NeoOperations.getContaminatedEvents(ses);
+	public static void infectThruEvent(Session ses, Date date) {
+		ArrayList eventList = NeoOperations.getContaminatedEvents(ses, date);
 		StringBuilder newlyInfectedIds = new StringBuilder();
 		String prefix = "";
 		for (int i = 0; i < eventList.size(); i++) {
@@ -432,13 +394,13 @@ public class Infection {
 				double riskFactor = calculateEventRisk(person, event, eventDensity, infectionDensity);
 				double luckFactor = luck.nextDouble(); 
 				if (riskFactor > luckFactor) {
-					System.out.println(person.getName() + " HAS been infected while attending " +  event.getEventName() 
+					System.out.println("-Event attendee [" + person.getName() + "] HAS been infected while attending " +  event.getEventName() 
 					+ " as their risk factor was [" + riskFactor + "] and their luck factor was [" + luckFactor + "] ");
 					newlyInfectedIds.append(prefix);
 					newlyInfectedIds.append(personId);
 					prefix = ", ";
 				} else {
-					System.out.println(person.getName() + " HAS NOT been infected while attending " + event.getEventName() 
+					System.out.println("-Event attendee [" + person.getName() + "] HAS NOT been infected while attending " + event.getEventName() 
 					+ "as their risk factor was [" + riskFactor + "] and their luck factor was [" + luckFactor + "] ");
 				}
 			}
@@ -499,7 +461,7 @@ public class Infection {
 
 	public static double calculateEventRisk(Person person, Events event, double eventDensity, double infectionDensity) {
 		double capacityFactorSub = infDensityWT * infectionDensity + popDensityWT * eventDensity;
-		double personFactor = personalRisk(person); // calculateBehaviorRisk(person);
+		double personFactor = personalRisk(person);
 		double eventFactor = eventInfectionWT * eventRisk(event);
 
 		double capacityFactor = capacityInfectionWT * capacityFactorSub;
