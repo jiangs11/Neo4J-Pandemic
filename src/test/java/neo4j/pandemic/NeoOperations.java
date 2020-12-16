@@ -521,7 +521,7 @@ public class NeoOperations {
 			Result result = tx.run(buffer.toString());
 			int id = result.single().get(0).asInt();
 			tx.commit();
-			System.out.println("Node " + id + " committed.");
+			System.out.println("New Event [" + event.getEventName() + "] with id [" + id + "] committed.");
 			return id;
 		}
 		catch (Exception e) {
@@ -562,7 +562,7 @@ public class NeoOperations {
 				tx = session.beginTransaction();
 				StringBuilder cmd = new StringBuilder(); 
 				cmd.append("MATCH (i:Person:infected)-[r:ATTENDS]->(e:Event) "); 
-				cmd.append("WHERE e.eventDate = ").append(date.getTime()).append(" ");
+				cmd.append("WHERE e.eventDate = '").append(date.getTime()).append("' ");
 				cmd.append("RETURN distinct ID(e), e.name, e.eventDate, e.eventType, e.eventCapacity, e.venue, e.indoorVentilation, e.maskEnforcement, ");
 				cmd.append("e.socialDistancing, e.tempChecks, e.handSanitizerAvailable, e.CDCApprovedCleaning");
 				Result result = tx.run(cmd.toString());

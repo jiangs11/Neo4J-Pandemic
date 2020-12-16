@@ -114,7 +114,9 @@ public class EventBuilder {
 	 */
 	public static void fillEventHolder(int numEvents) {
 		for (int i = 0; i < numEvents; i++) {
-			generateEvent("Event" + r.nextInt(500), new Date(2020, r.nextInt(10) + 2, r.nextInt(27) + 1), 300);
+			Date date = new Date(2020, r.nextInt(10) + 2, r.nextInt(27) + 1);
+			generateEvent("Event" + r.nextInt(500), date, 300);
+			System.out.println("New event on " + date.getTime());
 		}
 	}
 	

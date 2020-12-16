@@ -330,7 +330,7 @@ public class Infection {
 	 * 
 	 * @param session       Session object connecting to db
 	 */
-	public static void infectThroughNetwork(Session session) {
+	public static void infectThruNetwork(Session session) {
 		HashMap map = NeoOperations.getHealthyNeighborsOfInfectedNodes(session);
 		HashMap infectedPeopleMap = (HashMap)map.get("INFECTED");
 		ArrayList<HashMap> exposedPeopleList = (ArrayList)map.get("EXPOSED"); 

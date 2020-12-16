@@ -9,7 +9,12 @@ import neo4j.EventBuilder.EventBuilder;
 import neo4j.EventBuilder.Events;
 import neo4j.pandemic.NeoConnector;
 import neo4j.pandemic.NeoOperations;
-
+/**
+ * 
+ * this is a class to test the infection algo with
+ * @author christinabannon
+ *
+ */
 public class InfectionDriver {
 
 	public static void main(String [] args) {
@@ -27,11 +32,14 @@ public class InfectionDriver {
 			nc = new NeoConnector(bolt, "neo4j", "Christina");
 			ses = nc.getDriver().session();
 			
-			createEvents(ses);
+			/**
+			 * 61549214400000
+			 */
 			
-			Infection.infectThroughNetwork(ses); 		
-
-			Infection.infectThruEvent(ses, new Date(2020, 5, 5));
+			createEvents(ses);
+			Long ms = new Long("61558977600000");
+			Infection.infectThruNetwork(ses); 		
+			Infection.infectThruEvent(ses, new Date(ms));
 			
 			ses.close();
 			nc.close();
@@ -41,7 +49,7 @@ public class InfectionDriver {
 	}
 	
 	public static void createEvents(Session ses) {
-		EventBuilder.fillEventHolder(10);
+		EventBuilder.fillEventHolder(50);
 		ArrayList<Events> eventHolder = EventBuilder.getEventHolder();
 		for(int i = 0; i < eventHolder.size(); i++) {
 			Events event = eventHolder.get(i);
