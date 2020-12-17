@@ -28,6 +28,7 @@ public class ValidValues {
 			"warehouse","noPublicInteraction", "grocery","restaurant","teachers", "medicalWorkers"));
 	public final static List<String> maskUsage = new ArrayList<String>(Arrays.asList("always", "veryOften", "sometimes", "rarely", "never"));
 	public final static List<String> socialGuidelines = new ArrayList<String>(Arrays.asList("doesntFollow", "kindOfFollows", "follows"));
+	public final static List<String> socialClass = new ArrayList<String>(Arrays.asList("poor", "middleClass", "rich", "onePercenter"));
 
 	// Populate Map
 	public final static Map<Attribute, List<String>> keyValues;
@@ -40,6 +41,7 @@ public class ValidValues {
 		keyValues.put(new Attribute(Attribute.Property.infection_date, Attribute.Datatype.date), null);
 		keyValues.put(new Attribute(Attribute.Property.jobType, Attribute.Datatype.string), jobType);
 		keyValues.put(new Attribute(Attribute.Property.masks, Attribute.Datatype.string), masks);
+		keyValues.put(new Attribute(Attribute.Property.socialClass, Attribute.Datatype.string), socialClass);
 		keyValues.put(new Attribute(Attribute.Property.maskUsage, Attribute.Datatype.string), maskUsage);
 		keyValues.put(new Attribute(Attribute.Property.relationship_strength, Attribute.Datatype.string), relStrengths);
 		keyValues.put(new Attribute(Attribute.Property.socialGuidelines, Attribute.Datatype.string), socialGuidelines);

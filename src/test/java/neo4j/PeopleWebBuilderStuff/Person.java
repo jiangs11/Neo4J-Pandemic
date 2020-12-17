@@ -23,6 +23,10 @@ public class Person {
 	 */
 	private String name;
 	/**
+	 * A  person's social class
+	 */
+	private SocialClass socialClass;
+	/**
 	 * A person's age
 	 */
 	private int age;
@@ -78,7 +82,7 @@ public class Person {
 	public Person(String name, int age, Masks masks,
 			SocialGuidelines socialGuidlines, boolean handWashing, 
 			ArrayList<PreexistingCondition> healthIssues, boolean hermit,
-			MaskUsage maskUsage, JobType job, Date dob) {
+			MaskUsage maskUsage, JobType job, Date dob, SocialClass socialClass) {
 		this.name = name;
 		this.masks = masks;
 		this.maskUsage = maskUsage;
@@ -89,6 +93,7 @@ public class Person {
 		this.underLyingCondition = healthIssues;
 		this.setJobType(job);
 		this.dob = dob;
+		this.socialClass = socialClass;
 	}
 
 	/**
@@ -229,7 +234,40 @@ public class Person {
 			break;
 		}
 	}
+	
+	/** 
+	 * Gets a person's social class
+	 * 
+	 * @return social class
+	 */
+	public SocialClass getSocialClass() {
+		return socialClass;
+	}
 
+	/**
+	 * Sets social class
+	 * @param socialClass
+	 */
+	public void setSocialClass(SocialClass socialClass) {
+		this.socialClass = socialClass;
+	}
+	public void setSocialClass(String socialClass) {
+		switch(socialClass) {
+		case "poor":
+			this.socialClass = SocialClass.poor;
+			break;
+		case "middleClass":
+			this.socialClass = SocialClass.middleClass;
+			break;
+		case "rich":
+			this.socialClass = SocialClass.rich;
+			break;
+		case "onePercenter":
+			this.socialClass = SocialClass.onePercenter;
+			break;
+		}
+	}
+	
 	/**
 	 * Gets a person's social guidelines status
 	 * 

@@ -29,6 +29,7 @@ public class EventBuilder {
 	static Boolean sanitizer = false;
 	static Boolean cleaning = false;
 
+
 	/**
 	 * Generator function for events
 	 */
@@ -105,9 +106,25 @@ public class EventBuilder {
 			eventHolder.add(event);
 			
 		}
-		
-		
-
 	}
-
+	
+	/**
+	 * Created for testing - need events to test infectThruEvent, schedules a 2020 event between Feb and Dec
+	 * @param numEvents
+	 */
+	public static void fillEventHolder(int numEvents) {
+		for (int i = 0; i < numEvents; i++) {
+			Date date = new Date(2020, r.nextInt(10) + 2, r.nextInt(27) + 1);
+			generateEvent("Event" + r.nextInt(500), date, 300);
+			System.out.println("New event on " + date.getTime());
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static ArrayList getEventHolder() {
+		return eventHolder; 
+	}
 }

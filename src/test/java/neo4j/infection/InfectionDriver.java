@@ -1,13 +1,20 @@
 package neo4j.infection;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Date;
 
 import org.neo4j.driver.Session;
 
+import neo4j.EventBuilder.EventBuilder;
+import neo4j.EventBuilder.Events;
 import neo4j.pandemic.NeoConnector;
-
+import neo4j.pandemic.NeoOperations;
+/**
+ * 
+ * this is a class to test the infection algo with
+ * @author christinabannon
+ *
+ */
 public class InfectionDriver {
 
 	public static void main(String [] args) {
@@ -24,9 +31,15 @@ public class InfectionDriver {
 
 			nc = new NeoConnector(bolt, "neo4j", "Christina");
 			ses = nc.getDriver().session();
-
 			
-			Infection.infectThroughNetwork(ses); 
+			/**
+			 * 61549214400000
+			 */
+			
+			createEvents(ses);
+			Long ms = new Long("61558977600000");
+			Infection.infectThruNetwork(ses); 		
+			Infection.infectThruEvent(ses, new Date(ms));
 			
 			ses.close();
 			nc.close();
@@ -34,4 +47,20 @@ public class InfectionDriver {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	public static void createEvents(Session ses) {
+		EventBuilder.fillEventHolder(50);
+		ArrayList<Events> eventHolder = EventBuilder.getEventHolder();
+		for(int i = 0; i < eventHolder.size(); i++) {
+			Events event = eventHolder.get(i);
+			int eventId = NeoOperations.addEventNode(ses, event);
+			ArrayList<Integer> people = NeoOperations.getRandomPeople(ses, 10);
+			for (int j = 0; j < people.size(); j++) {
+				NeoOperations.relateTwoNodes(ses, people.get(j), eventId, "attends");
+			}
+		}
+	}
+	
+	
+	
 }

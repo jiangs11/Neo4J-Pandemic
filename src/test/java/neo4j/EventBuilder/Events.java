@@ -10,8 +10,9 @@ enum EventPlace { indoor, outdoor; }
 enum VentilationType { not_upgraded, upgraded; }
 enum EventType { political, wedding, concert, flea_market, carnival, sports; }
 
+
 public class Events { 
-	
+
 	private String eventName;
 	private Date eventDate;
 	private EventType eventType;
@@ -24,6 +25,8 @@ public class Events {
 	private Boolean handSanitizerAvailable;
 	private Boolean CDCApprovedCleaning;
 	
+	public Events() {
+	}
 	/**
 	 * Constructor for outdoor events
 	 * 
@@ -36,7 +39,6 @@ public class Events {
 	 */
 	public Events(String name, Date date, EventType type, int cap, EventPlace place,
 			Boolean mask, Boolean dist, Boolean temp, Boolean hand, Boolean cdc) {
-		
 		eventName = name;
 		eventDate = date;
 		eventType = type;
@@ -47,7 +49,6 @@ public class Events {
 		tempChecks = temp;
 		handSanitizerAvailable = hand;
 		CDCApprovedCleaning = cdc;
-		
 	}
 	
 	/**
@@ -105,8 +106,57 @@ public class Events {
 		return eventType;
 	}
 	
+	public String getEventTypeString() {
+		String eventTypeString = ""; 
+		// political, wedding, concert, flea_market, carnival, sports; 
+		switch(eventType) {
+		case political: 
+			eventTypeString = "political";
+			break; 
+		case wedding:
+			eventTypeString = "wedding";
+			break; 
+		case concert:
+			eventTypeString = "concert";
+			break; 
+		case flea_market: 
+			eventTypeString = "flea_market";
+			break; 
+		case carnival: 
+			eventTypeString = "carnival";
+			break;
+		case sports: 
+			eventTypeString = "sports";
+			break; 
+		}
+		return eventTypeString;
+	}
+	
 	public void setEventType(EventType eventType) {
 		this.eventType = eventType;
+	}
+	
+	public void setEventType(String eventTypeString) {
+		switch(eventTypeString) {
+		case "political": 
+			eventType = EventType.political;
+			break; 
+		case "wedding":
+			eventType = EventType.wedding;
+			break; 
+		case "concert":
+			eventType = EventType.concert;
+			break; 
+		case "flea_market": 
+			eventType = EventType.flea_market;
+			break; 
+		case "carnival": 
+			eventType = EventType.carnival;
+			break;
+		case "sports": 
+			eventType = EventType.sports;
+			break; 
+		}
 	}
 	
 	public int getEventCapacity() {
@@ -121,16 +171,64 @@ public class Events {
 		return venue;
 	}
 
+	public String getVenueString() {
+		String venueString = "";
+		switch(venue) {
+		case indoor:
+			venueString = "indoor";
+			break; 
+		case outdoor:
+			venueString = "outdoor";
+			break; 
+		}
+		return venueString; 
+	}
+	
 	public void setVenue(EventPlace venue) {
 		this.venue = venue;
+	}
+	
+	public void setVenueFromString(String venueString) {
+		switch(venueString) {
+		case "indoor":
+			venue = EventPlace.indoor;
+			break; 
+		case "outdoor":
+			venue = EventPlace.outdoor;
+			break; 
+		}
 	}
 
 	public VentilationType getIndoorVentilation() {
 		return indoorVentilation;
 	}
 
+	public String getIndoorVentilationString() {
+		String indoorVentilationString = "";
+		switch(indoorVentilation) {
+		case upgraded:
+			indoorVentilationString = "upgraded";
+			break; 
+		case not_upgraded:
+			indoorVentilationString = "not_upgraded";
+			break; 
+		}
+		return indoorVentilationString; 
+	}
+	
 	public void setIndoorVentilation(VentilationType indoorVentilation) {
 		this.indoorVentilation = indoorVentilation;
+	}
+	
+	public void setIndoorVentilationFromString(String indoorVentilationString) {
+		switch(indoorVentilationString) {
+		case "upgraded":
+			indoorVentilation = VentilationType.upgraded;
+			break; 
+		case "not_upgraded":
+			indoorVentilation = VentilationType.not_upgraded;
+			break; 
+		} 
 	}
 
 	public Boolean getMaskEnforcement() {
@@ -172,7 +270,6 @@ public class Events {
 	public void setCDCApprovedCleaning(Boolean cDCApprovedCleaning) {
 		CDCApprovedCleaning = cDCApprovedCleaning;
 	}
-	
 }
 	
 

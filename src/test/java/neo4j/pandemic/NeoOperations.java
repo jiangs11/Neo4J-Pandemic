@@ -3,6 +3,7 @@ package neo4j.pandemic;
 import static org.neo4j.driver.Values.parameters;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,10 @@ import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Value;
 
+//import neo4j.EventBuilder.EventPlace;
+//import neo4j.EventBuilder.EventType;
+import neo4j.EventBuilder.Events;
+//import neo4j.EventBuilder.VentilationType;
 import neo4j.PeopleWebBuilderStuff.Person;
 import neo4j.PeopleWebBuilderStuff.PreexistingCondition;
 
@@ -179,6 +184,7 @@ public class NeoOperations {
 			}
 		}
 	}
+
 	//TODO Change this to check if a relatoinship exists
 	public static void addPropertyToRelationshipOneway(Session session, int nodeId1, int nodeId2, 
 			String relationship, Attribute attr, String value) {
@@ -218,6 +224,8 @@ public class NeoOperations {
 			}
 		}
 	}
+
+
 	/**
 	 * adds a Label to an existing node
 	 * 
@@ -350,7 +358,7 @@ public class NeoOperations {
 			cmd.append("ID(h), h.name,  h.maskUsage, h.masks, h.jobType, h.socialGuidelines, h.handWashing, h.hermit, "); 
 			cmd.append("r.relationship_strength ");
 			Result result = tx.run(cmd.toString());
-			
+
 			HashMap infectedPeopleMap = new HashMap<>(); 
 			ArrayList<HashMap> exposedPeopleList = new ArrayList<>();  
 			HashMap personTransmitterRelationshipMap = new HashMap<>(); 
@@ -358,23 +366,23 @@ public class NeoOperations {
 			while (result.hasNext()) {
 				currentRecord = result.next(); 
 				String exposedId = currentRecord.get("ID(h)").toString();
-					personTransmitterRelationshipMap = new HashMap<>(); 
-					String transmitterId = currentRecord.get("ID(i)").toString();
-					Person exposedPerson = pullPersonFromRecord(false, currentRecord); 
-					personTransmitterRelationshipMap.put("id", exposedId); 
-					personTransmitterRelationshipMap.put("person", exposedPerson); 
-					personTransmitterRelationshipMap.put("transmitterId", transmitterId); 
-					personTransmitterRelationshipMap.put("relationship", currentRecord.get("r.relationship_strength").toString().replace('"', ' ').trim());
-					exposedPeopleList.add(personTransmitterRelationshipMap); 
-					
-					if (!infectedPeopleMap.containsKey(transmitterId)) {
-						Person infectedPerson = pullPersonFromRecord(true, currentRecord); 
-						infectedPeopleMap.put(transmitterId, infectedPerson); 
-					}
+				personTransmitterRelationshipMap = new HashMap<>(); 
+				String transmitterId = currentRecord.get("ID(i)").toString();
+				Person exposedPerson = pullPersonFromRecord(false, currentRecord); 
+				personTransmitterRelationshipMap.put("id", exposedId); 
+				personTransmitterRelationshipMap.put("person", exposedPerson); 
+				personTransmitterRelationshipMap.put("transmitterId", transmitterId); 
+				personTransmitterRelationshipMap.put("relationship", currentRecord.get("r.relationship_strength").toString().replace('"', ' ').trim());
+				exposedPeopleList.add(personTransmitterRelationshipMap); 
+
+				if (!infectedPeopleMap.containsKey(transmitterId)) {
+					Person infectedPerson = pullPersonFromRecord(true, currentRecord); 
+					infectedPeopleMap.put(transmitterId, infectedPerson); 
+				}
 			}
 			resultsMap.put("INFECTED", infectedPeopleMap);
 			resultsMap.put("EXPOSED", exposedPeopleList); 
-			
+
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -384,8 +392,8 @@ public class NeoOperations {
 		}
 		return resultsMap; 
 	}
-	
-	
+
+
 	/**
 	 * TIME SEQUENCING - in this update you will want to set the dateInfected
 	 * 
@@ -407,7 +415,56 @@ public class NeoOperations {
 			System.err.println(e.getMessage());
 		}
 	}
+
+
+	public static void healAll(Session session) {
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			tx.run("match (n:Person:infected) remove n:infected");
+			tx.commit(); 
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public static ArrayList<Integer> getRandomPeople(Session session, int numPeople) {
+		Transaction tx = null;
+		ArrayList<Integer> peopleIds = new ArrayList<>(); 
+		Record currentRecord = null; 
+		try {
+			tx = session.beginTransaction();
+			Result result = tx.run("MATCH (p:Person) return id(p), rand() as rand order by rand ASC Limit " + numPeople);
+			while (result.hasNext()) {
+				currentRecord = result.next(); 
+				peopleIds.add(Integer.parseInt(currentRecord.get("id(p)").toString()));
+			}
+			tx.commit(); 
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return peopleIds; 
+	}
+
+	public static void infectFirstPerson(Session session) {
+		Transaction tx = null;
+		Record currentRecord = null; 
+		try {
+			tx = session.beginTransaction();
+			Result result = tx.run("MATCH (p:Person) return id(p), rand() as rand order by rand ASC Limit 1");
+			currentRecord = result.next(); 
+			Integer id = Integer.parseInt(currentRecord.get("id(p)").toString());
+			result = tx.run("MATCH (n) WHERE id(n) = " + id + " SET n:infected RETURN n.name, labels(n)");
+			currentRecord = result.next(); 
+			String name = currentRecord.get("n.name").toString();
+			tx.commit(); 
+			System.out.println("First Infection: " + id + ": " + name); 
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
 	
+
 	/**
 	 * TIME SEQUENCING - in this update you will want to set the dateInfected
 	 * 
@@ -429,7 +486,7 @@ public class NeoOperations {
 		}
 		return results;
 	}
-	
+  
 	private static Person pullPersonFromRecord(boolean infected, Record currentRecord) {
 		Person person = new Person(); 
 		String alias = (infected ? "i" : "h"); 
@@ -442,4 +499,153 @@ public class NeoOperations {
 		person.setHermit(currentRecord.get(alias + ".hermit").toString().replace('"', ' ').trim().equals("true")? true : false);
 		return person; 
 	}
+
+	private static Person pullPersonFromEventRecord(Record currentRecord) {
+		Person person = new Person(); 
+		String alias = "i";
+		person.setName(currentRecord.get(alias + ".name").toString().replace('"', ' ').trim());
+		person.setMask(currentRecord.get(alias + ".masks").toString().replace('"', ' ').trim());
+		person.setMaskUsage(currentRecord.get(alias + ".maskUsage").toString().replace('"', ' ').trim());
+		person.setJobType(currentRecord.get(alias + ".jobType").toString().replace('"', ' ').trim());
+		person.setSocialGuidelines(currentRecord.get(alias + ".socialGuidelines").toString().replace('"', ' ').trim());
+		person.setHandWashing(currentRecord.get(alias + ".handWashing").toString().replace('"', ' ').trim().equals("true")? true : false);
+		person.setHermit(currentRecord.get(alias + ".hermit").toString().replace('"', ' ').trim().equals("true")? true : false);
+		return person; 
+	}
+	
+	/**
+	 * Made for testing, pass an event and this method will create a node from it
+	 * @param session
+	 * @param event
+	 * @return
+	 */
+	public static int addEventNode(Session session, Events event) {
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			StringBuffer buffer = new StringBuffer(); 
+			buffer.append("CREATE (n:Event ");
+			buffer.append("{ name : '").append(event.getEventName()).append("', ");
+			buffer.append("project : 'pandemic', ");
+			buffer.append("eventDate : '").append(event.getEventDate().getTime()).append("', ");
+			buffer.append("eventType : '").append(event.getEventTypeString()).append("', ");
+			buffer.append("eventCapacity : ").append(event.getEventCapacity()).append(", ");
+			buffer.append("venue : '").append(event.getVenueString()).append("', ");
+			if (event.getVenueString().equals("indoor")){
+				buffer.append("indoorVentilation : '").append(event.getIndoorVentilationString()).append("', ");
+			}
+			buffer.append("maskEnforcement : ").append(event.getMaskEnforcement()).append(", ");
+			buffer.append("socialDistancing : ").append(event.getSocialDistancing()).append(", ");
+			buffer.append("tempChecks : ").append(event.getTempChecks()).append(", ");
+			buffer.append("handSanitizerAvailable : ").append(event.getHandSanitizerAvailable()).append(", ");
+			buffer.append("CDCApprovedCleaning : ").append(event.getCDCApprovedCleaning()).append(" })");
+			buffer.append("RETURN id(n)");
+			Result result = tx.run(buffer.toString());
+			int id = result.single().get(0).asInt();
+			tx.commit();
+			System.out.println("New Event [" + event.getEventName() + "] with id [" + id + "] committed.");
+			return id;
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+			return -1;
+		}
+		finally {
+			tx.close();
+		}
+	}
+
+	/**
+	 * evenList of 
+	 *  - event HashMaps
+	 *  --  eventobject
+	 *  --  eventId
+	 *  --  sickList
+	 *  ---- personHashMaps
+	 *  --- healthyList
+	 *  ---- personHashMaps
+	 *  
+	 *  eventMap (eid, eventObj
+	 *    each 
+	 *  
+	 * @param session
+	 * @return
+	 */
+	public static ArrayList getContaminatedEvents(Session session, Date date) {
+			Transaction tx = null;
+			ArrayList eventList = new ArrayList<>(); 
+			HashMap resultsMap = new HashMap(); 
+			HashMap personTransmitterRelationshipMap = new HashMap<>(); 
+			Record currentEventRecord = null; 
+			Record currentPersonRecord = null; 
+			String currentEventId = null; 
+			Events event = null; 
+			try {
+				tx = session.beginTransaction();
+				StringBuilder cmd = new StringBuilder(); 
+				cmd.append("MATCH (i:Person:infected)-[r:ATTENDS]->(e:Event) "); 
+				cmd.append("WHERE e.eventDate = '").append(date.getTime()).append("' ");
+				cmd.append("RETURN distinct ID(e), e.name, e.eventDate, e.eventType, e.eventCapacity, e.venue, e.indoorVentilation, e.maskEnforcement, ");
+				cmd.append("e.socialDistancing, e.tempChecks, e.handSanitizerAvailable, e.CDCApprovedCleaning");
+				Result result = tx.run(cmd.toString());
+				while (result.hasNext()) {
+					currentEventRecord = result.next();
+					String eventId = currentEventRecord.get("ID(e)").toString().replace('"', ' ').trim();
+					HashMap eventMap = new HashMap(); 
+					ArrayList infectedList = new ArrayList(); 
+					ArrayList healthyList = new ArrayList(); 
+					
+					event = new Events();
+					event.setEventName(currentEventRecord.get("e.name").toString().replace('"', ' ').trim());
+					long eventDateTime = Long.parseLong(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
+					event.setEventDate(new Date(eventDateTime));
+					//	event.setEventDate(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
+					event.setEventType(currentEventRecord.get("e.eventType").toString().replace('"', ' ').trim());
+					event.setEventCapacity(Integer.parseInt(currentEventRecord.get("e.eventCapacity").toString()));
+					event.setVenueFromString(currentEventRecord.get("e.venue").toString().replace('"', ' ').trim());
+					if (event.getVenueString().equals("indoor")) {
+						event.setIndoorVentilationFromString(currentEventRecord.get("e.indoorVentilation").toString());
+					} 
+					event.setMaskEnforcement(currentEventRecord.get("e.maskEnforcement").equals("true"));
+					event.setSocialDistancing(currentEventRecord.get("e.socialDistancing").equals("true"));
+					event.setTempChecks(currentEventRecord.get("e.tempChecks").equals("true"));
+					event.setHandSanitizerAvailable(currentEventRecord.get("e.handSanitizerAvailable").equals("true"));
+					event.setCDCApprovedCleaning(currentEventRecord.get("e.CDCApprovedCleaning").equals("true"));
+					
+					cmd = new StringBuilder(); 
+					cmd.append("MATCH (i:Person)-[r:ATTENDS]->(e:Event) "); 
+					cmd.append("where ID(e) = ").append(eventId).append(" ");
+					cmd.append("return ID(i), i.name,  i.maskUsage, i.masks, i.jobType, i.socialGuidelines, i.handWashing, i.hermit, labels(i)");
+					result = tx.run(cmd.toString());
+					
+					while (result.hasNext()) {
+						currentPersonRecord = result.next();
+						String personID = currentPersonRecord.get("ID(i)").toString().replace('"', ' ').trim();
+						String [] labels = currentPersonRecord.get("labels(i)").toString().split(","); 
+						Person person = pullPersonFromEventRecord(currentPersonRecord);
+						
+						HashMap personMap = new HashMap(); 
+						personMap.put("personID", personID);
+						personMap.put("person", person);
+						if (labels.length > 1) {
+							infectedList.add(personMap);
+						} else {
+							healthyList.add(personMap);
+						}
+					}
+					eventMap.put("eventID", eventId);
+					eventMap.put("event", event);
+					eventMap.put("healthyList", healthyList);
+					eventMap.put("infectedList", infectedList);
+					eventList.add(eventMap);
+				}
+			}
+			catch (Exception e) {
+				System.err.println(e.getMessage());
+			}	
+			finally {
+				tx.close();
+			}
+			return eventList; 
+		}
 }
