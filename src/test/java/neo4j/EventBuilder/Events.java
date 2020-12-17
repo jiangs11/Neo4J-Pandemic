@@ -6,11 +6,6 @@ import java.util.Date;
  * Events class for pandemic project
  */
 
-enum EventPlace { indoor, outdoor; }
-enum VentilationType { not_upgraded, upgraded; }
-enum EventType { political, wedding, concert, flea_market, carnival, sports; }
-
-
 public class Events { 
 
 	private String eventName;
