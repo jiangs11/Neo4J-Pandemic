@@ -402,13 +402,13 @@ public class NeoOperations {
 	 * @param session   : the Session object from NeoConnector
 	 * @param idFilter  : 
 	 */
-	public static void infectNodes(Session session, String idFilter) {
+	public static void infectNodes(Session session, String idFilter, Date date) {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			StringBuilder cmd = new StringBuilder(); 
 			cmd.append("match(h:Person) where (ID(h) in [").append(idFilter).append("]) ");
-			cmd.append("set h:infected ");
+			cmd.append("set h:infected, h.date_infected = " + date.toString());
 			tx.run(cmd.toString());
 			tx.commit(); 
 		} catch (Exception e) {
@@ -473,11 +473,11 @@ public class NeoOperations {
 	 * @param session   : the Session object from NeoConnector
 	 * @param idFilter  : 
 	 */
-	public static int[] getData(Session session) {
+	public static int[] getData(Session session, Date date) {
 		int[] results = new int[2];
 		try {
 
-			Result result = session.run("match(n:InfectedPerson) return count(n) as count");
+			Result result = session.run("match(n:InfectedPerson) where n.date = " + date.toString() + " return count(n) as count");
 			results[0] = Integer.parseInt(result.next().get("count").toString());
 			result = session.run("match(n:DeceasedPerson) return count(n) as count");
 			results[1] = Integer.parseInt(result.next().get("count").toString());

@@ -45,16 +45,16 @@ public class Simulator {
 			if(i % 35 == 0) {
 				EventBuilder.generateEvent("Event number " + i, date, 100);
 			}
-			Infection.infectThroughNetwork(ses);
+			Infection.infectThruNetwork(ses, date);
 			
-			//Infection.infectThroughEvents(ses);
+			Infection.infectThruEvent(ses, date);
 			Killer.getInfectedPerson_attributes(ses);
 			
-			data = NeoOperations.getData(ses);
+			data = NeoOperations.getData(ses, date);
 			System.out.println(data[0] +" " + data[1]);
 			if (i > 0) {
 				dead[i] = data[1] - sumArray(dead, i);
-				infected[i] = data[0] - sumArray(infected, i) + dead[i];
+				infected[i] = data[0] - sumArray(infected, i) + data[1];
 			}
 			else {
 				infected[i] = data[0];

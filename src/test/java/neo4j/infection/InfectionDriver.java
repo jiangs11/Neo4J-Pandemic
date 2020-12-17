@@ -38,7 +38,7 @@ public class InfectionDriver {
 			
 			createEvents(ses);
 			Long ms = new Long("61558977600000");
-			Infection.infectThruNetwork(ses); 		
+//			Infection.infectThruNetwork(ses); 		
 			Infection.infectThruEvent(ses, new Date(ms));
 			
 			ses.close();

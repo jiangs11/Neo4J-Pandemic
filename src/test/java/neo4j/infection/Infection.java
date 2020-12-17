@@ -330,7 +330,7 @@ public class Infection {
 	 * 
 	 * @param session       Session object connecting to db
 	 */
-	public static void infectThruNetwork(Session session) {
+	public static void infectThruNetwork(Session session, Date date) {
 		HashMap map = NeoOperations.getHealthyNeighborsOfInfectedNodes(session);
 		HashMap infectedPeopleMap = (HashMap)map.get("INFECTED");
 		ArrayList<HashMap> exposedPeopleList = (ArrayList)map.get("EXPOSED"); 
@@ -364,7 +364,7 @@ public class Infection {
 		}
 		if (newlyInfectedIds.length() > 0) {
 			System.out.println("Updating nodes " + newlyInfectedIds.toString());
-			NeoOperations.infectNodes(session, newlyInfectedIds.toString()); 
+			NeoOperations.infectNodes(session, newlyInfectedIds.toString(), date); 
 			System.out.println("Update complete");
 		} else {
 			System.out.print("No node updates");
@@ -406,7 +406,7 @@ public class Infection {
 			}
 			if (newlyInfectedIds.length() > 0) {
 				System.out.println("Updating nodes " + newlyInfectedIds.toString());
-				NeoOperations.infectNodes(ses, newlyInfectedIds.toString()); 
+				NeoOperations.infectNodes(ses, newlyInfectedIds.toString(), date); 
 				System.out.println("Update complete");
 			} else {
 				System.out.print("No node updates");
