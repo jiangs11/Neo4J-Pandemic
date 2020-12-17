@@ -417,22 +417,12 @@ public class NeoOperations {
 	 * @param idFilter  : 
 	 */
 	public static int[] getData(Session session) {
-		Transaction tx = null;
 		int[] results = new int[2];
 		try {
-			tx = session.beginTransaction();
-			StringBuilder cmd = new StringBuilder(); 
-			cmd.append("match(h:infected) return count(n) as count");
-			tx.run(cmd.toString());
-			tx.commit(); 
-			Result result = tx.run(cmd.toString());
+
+			Result result = session.run("match(n:InfectedPerson) return count(n) as count");
 			results[0] = Integer.parseInt(result.next().get("count").toString());
-			tx = session.beginTransaction();
-			cmd = new StringBuilder(); 
-			cmd.append("match(h:dead) return count(n) as count");
-			tx.run(cmd.toString());
-			tx.commit(); 
-			result = tx.run(cmd.toString());
+			result = session.run("match(n:DeceasedPerson) return count(n) as count");
 			results[1] = Integer.parseInt(result.next().get("count").toString());
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

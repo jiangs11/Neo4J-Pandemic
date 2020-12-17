@@ -18,11 +18,9 @@ public class Killer {
 	public static final double BASE_DEATH_RATE=0.016;
 	/* This function retrieve infected people and their attributes and labels */
 	
-	public static void getInfectedPerson_attributes()
+	public static void getInfectedPerson_attributes(Session ses)
 	{
-		String bolt = "bolt://54.90.41.128:7687"; 
-		NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
-		Session ses = nc.getDriver().session();
+		
 		Transaction tx=null;
 		try {
 			tx=ses.beginTransaction();
@@ -133,15 +131,6 @@ public class Killer {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			e.getStackTrace();}
-		
-		/* close the connection */
-		try{
-			ses.close();
-			nc.close();
-			}catch(Exception e)
-			{
-				System.out.println(e.getMessage());
-			}
 		
 		
 	}
@@ -287,77 +276,80 @@ public class Killer {
 	    }
 		return false;
 	}
-	public static void main(String[] args) {
-		/*// TODO Auto-generated method stub
-        //  System.out.println("Toto");
-       // Connector to the main DB server
-  		
-  		String bolt1 = "bolt://54.237.9.240:7687";  // Main DB Server
-  		String bolt2 = "bolt://54.90.41.128:7687";  // Dedicated neo server
-  		
-  		// Uncomment the bolt assignment that you want to use
-  		//String bolt = bolt1;
-  		String bolt = bolt2;
-  		/*try {
-  		Driver driver = GraphDatabase.driver(bolt, AuthTokens.basic("neo4j", "graphme"));
-  		
-  		Session ses = driver.session();
-  		
-			ses.close();
-			driver.close();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}*/
-  		/*NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
-		Session ses = nc.getDriver().session();
-		Transaction tx=null;
-		try{
-		tx=ses.beginTransaction();
-		String cmd = "MATCH (n) " + 
-        "WHERE id(n) = " + 14411 + " " +
-        "RETURN labels(n)";
-		
-        Result result = tx.run(cmd);   	
-		
-		System.out.println(result.list());
-		//String cmd2="match(n:InfectedPerson)-[]-(p) return n,p";
-		String cmd2="match(n:InfectedPerson) return n, properties(n) , labels(n)";
-		//String cmd2="match(n) where n.infected='true' return n, properties(n) , labels(n)";
-		Result res=tx.run(cmd2);
-		
-		
-		do {
-			
-			//getting a record id
-			Record record=res.next();
-			Value nv=record.get(0);
-			long  node_id = nv.asNode().id();
-			
-			// getting the properties
-			Map<String, Object> mv= record.get(1).asMap();
-			System.out.println("Node id :"+ node_id);
-			System.out.println(" contains key "+ mv.containsKey("name"));
-			System.out.println("Node : "+ mv.get("name"));
-			System.out.println("Node properties " + mv);
-			System.out.println(record.get(2).asList());
-		}while(res.hasNext());
-		
-		}catch(Exception e1)
-		{
-			System.out.println(e1);
-		}*/
-		System.out.println(" ---- calling getInfectedPerson_attributes ---");
-		getInfectedPerson_attributes();
-		
-		/*try{
-		ses.close();
-		nc.close();
-		/*System.out.println(" factor = " +
-		hasToDie(30,true,false,false,false,false,false,false,false,false,true,false,false));*
-		}catch(Exception e)
-		{
-			System.out.println(e.getMessage());
-		}*/
-	}
+	
+	
+	
+//	public static void main(String[] args) {
+//		/*// TODO Auto-generated method stub
+//        //  System.out.println("Toto");
+//       // Connector to the main DB server
+//  		
+//  		String bolt1 = "bolt://54.237.9.240:7687";  // Main DB Server
+//  		String bolt2 = "bolt://54.90.41.128:7687";  // Dedicated neo server
+//  		
+//  		// Uncomment the bolt assignment that you want to use
+//  		//String bolt = bolt1;
+//  		String bolt = bolt2;
+//  		/*try {
+//  		Driver driver = GraphDatabase.driver(bolt, AuthTokens.basic("neo4j", "graphme"));
+//  		
+//  		Session ses = driver.session();
+//  		
+//			ses.close();
+//			driver.close();
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}*/
+//  		/*NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
+//		Session ses = nc.getDriver().session();
+//		Transaction tx=null;
+//		try{
+//		tx=ses.beginTransaction();
+//		String cmd = "MATCH (n) " + 
+//        "WHERE id(n) = " + 14411 + " " +
+//        "RETURN labels(n)";
+//		
+//        Result result = tx.run(cmd);   	
+//		
+//		System.out.println(result.list());
+//		//String cmd2="match(n:InfectedPerson)-[]-(p) return n,p";
+//		String cmd2="match(n:InfectedPerson) return n, properties(n) , labels(n)";
+//		//String cmd2="match(n) where n.infected='true' return n, properties(n) , labels(n)";
+//		Result res=tx.run(cmd2);
+//		
+//		
+//		do {
+//			
+//			//getting a record id
+//			Record record=res.next();
+//			Value nv=record.get(0);
+//			long  node_id = nv.asNode().id();
+//			
+//			// getting the properties
+//			Map<String, Object> mv= record.get(1).asMap();
+//			System.out.println("Node id :"+ node_id);
+//			System.out.println(" contains key "+ mv.containsKey("name"));
+//			System.out.println("Node : "+ mv.get("name"));
+//			System.out.println("Node properties " + mv);
+//			System.out.println(record.get(2).asList());
+//		}while(res.hasNext());
+//		
+//		}catch(Exception e1)
+//		{
+//			System.out.println(e1);
+//		}*/
+//		System.out.println(" ---- calling getInfectedPerson_attributes ---");
+//		getInfectedPerson_attributes();
+//		
+//		/*try{
+//		ses.close();
+//		nc.close();
+//		/*System.out.println(" factor = " +
+//		hasToDie(30,true,false,false,false,false,false,false,false,false,true,false,false));*
+//		}catch(Exception e)
+//		{
+//			System.out.println(e.getMessage());
+//		}*/
+//	}
 
 }

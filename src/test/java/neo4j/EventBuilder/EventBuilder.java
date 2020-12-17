@@ -9,30 +9,30 @@ public class EventBuilder {
 	static private ArrayList<Events> eventHolder = new ArrayList<Events>();
 
 	//set all variables
-	Random r = new Random();
-	int type;
-	int place;
-	int vent;
-	int cap;
-	int maskEn;
-	int soc;
-	int temp;
-	int hand;
-	int cdc;
-	EventType eventtype;
-	int eventCap;
-	EventPlace venue;
-	VentilationType ventilation;
-	Boolean mask = false;
-	Boolean social = false;
-	Boolean temperature = false;
-	Boolean sanitizer = false;
-	Boolean cleaning = false;
+	static Random r = new Random();
+	static int type;
+	static int place;
+	static int vent;
+	static int cap;
+	static int maskEn;
+	static int soc;
+	static int temp;
+	static int hand;
+	static int cdc;
+	static EventType eventtype;
+	static int eventCap;
+	static EventPlace venue;
+	static VentilationType ventilation;
+	static Boolean mask = false;
+	static Boolean social = false;
+	static Boolean temperature = false;
+	static Boolean sanitizer = false;
+	static Boolean cleaning = false;
 
 	/**
 	 * Generator function for events
 	 */
-	public void generateEvent(String name, Date date, int maxNumber) {
+	public static void generateEvent(String name, Date date, int maxNumber) {
 		// Randomize our variables
 		type = r.nextInt(6);
 		place = r.nextInt(2);
