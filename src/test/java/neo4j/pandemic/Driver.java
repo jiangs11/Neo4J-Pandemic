@@ -75,22 +75,13 @@ public class Driver {
 
 	}
 	
-	public static void main(String[] args) {
+	public static void start(Session ses) {
 		//TODO Set relationships to being only one per
 		// Connector to the main DB server
 		ArrayList<Integer> pids = new ArrayList<>();
 		PeopleBuilder.start();
 		ArrayList<Person> webOfPeople = PeopleBuilder.getPeopleHolder();
-		String bolt1 = "bolt://54.237.9.240:7687";  // Main DB Server
-		String bolt2 = "bolt://54.90.41.128:7687";  // Dedicated neo server
-		String bolt3 = "bolt://localhost:7687"; 	// Localhost
-		
-		// Uncomment the bolt assignment that you want to use
-		//String bolt = bolt1;
-		String bolt = bolt2;
 
-		NeoConnector nc = new NeoConnector(bolt, "neo4j", "graphme");
-		Session ses = nc.getDriver().session();
 		// ValidValues.showValidKeys();  // Uncomment this to see valid values
 		for (Person person : webOfPeople) {
 			Integer pid = NeoOperations.addNode(ses, "Person", person.getName());
@@ -186,12 +177,7 @@ public class Driver {
 //		NeoOperations.addLabelToNode(ses, pid2, "InfectedPerson");
 //		NeoOperations.relabelNode(ses, pid1, "DeceasedPerson");
 
-		try {
-			ses.close();
-			nc.close();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+
 //		int numb = 1;
 //		for (Person person : webOfPeople) {
 //			System.out.println(numb + " " + person.getNumberOfFriends());

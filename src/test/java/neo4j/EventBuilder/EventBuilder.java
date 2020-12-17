@@ -28,7 +28,7 @@ public class EventBuilder {
 	static Boolean temperature = false;
 	static Boolean sanitizer = false;
 	static Boolean cleaning = false;
-	
+
 
 	/**
 	 * Generator function for events

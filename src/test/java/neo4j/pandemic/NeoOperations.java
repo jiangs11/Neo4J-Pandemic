@@ -465,6 +465,28 @@ public class NeoOperations {
 	}
 	
 
+	/**
+	 * TIME SEQUENCING - in this update you will want to set the dateInfected
+	 * 
+	 * updates the nodes to reflect newly infected people
+	 * 
+	 * @param session   : the Session object from NeoConnector
+	 * @param idFilter  : 
+	 */
+	public static int[] getData(Session session) {
+		int[] results = new int[2];
+		try {
+
+			Result result = session.run("match(n:InfectedPerson) return count(n) as count");
+			results[0] = Integer.parseInt(result.next().get("count").toString());
+			result = session.run("match(n:DeceasedPerson) return count(n) as count");
+			results[1] = Integer.parseInt(result.next().get("count").toString());
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return results;
+	}
+  
 	private static Person pullPersonFromRecord(boolean infected, Record currentRecord) {
 		Person person = new Person(); 
 		String alias = (infected ? "i" : "h"); 
