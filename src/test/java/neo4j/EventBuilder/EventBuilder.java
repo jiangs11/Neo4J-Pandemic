@@ -33,7 +33,7 @@ public class EventBuilder {
 	/**
 	 * Generator function for events
 	 */
-	public static void generateEvent(String name, Date date, int maxNumber) {
+	public static void generateEvent(String name, long date, int maxNumber) {
 		// Randomize our variables
 		type = r.nextInt(6);
 		place = r.nextInt(2);
