@@ -15,6 +15,10 @@ import neo4j.PeopleWebBuilderStuff.Person;
 import neo4j.PeopleWebBuilderStuff.PreexistingCondition;
 import neo4j.PeopleWebBuilderStuff.Relationships;
 import neo4j.PeopleWebBuilderStuff.SocialGuidelines;
+import neo4j.EventBuilder.EventType;
+import neo4j.EventBuilder.EventPlace;
+import neo4j.EventBuilder.VentilationType;
+import neo4j.EventBuilder.Event;
 
 import java.util.Arrays;
 
@@ -29,6 +33,9 @@ public class ValidValues {
 	public final static List<String> maskUsage = new ArrayList<String>(Arrays.asList("always", "veryOften", "sometimes", "rarely", "never"));
 	public final static List<String> socialGuidelines = new ArrayList<String>(Arrays.asList("doesntFollow", "kindOfFollows", "follows"));
 	public final static List<String> socialClass = new ArrayList<String>(Arrays.asList("poor", "middleClass", "rich", "onePercenter"));
+	public final static List<String> eventType = new ArrayList<String>(Arrays.asList("political", "wedding", "concert", "flea_market", "carnival", "sports"));
+	public final static List<String> venue = new ArrayList<String>(Arrays.asList("indoor", "outdoor"));
+	public final static List<String> indoorVentilation = new ArrayList<String>(Arrays.asList("not_upgraded", "upgraded"));
 
 	// Populate Map
 	public final static Map<Attribute, List<String>> keyValues;
@@ -66,6 +73,18 @@ public class ValidValues {
 		keyValues.put(new Attribute(Attribute.Property.Smoking, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.Type1Diabetes, Attribute.Datatype.bool), booleans);
 		keyValues.put(new Attribute(Attribute.Property.Type2Diabetes, Attribute.Datatype.bool), booleans);
+		
+		//Event Values
+		keyValues.put(new Attribute(Attribute.Property.eventType, Attribute.Datatype.string), eventType);
+		keyValues.put(new Attribute(Attribute.Property.venue, Attribute.Datatype.string), venue);
+		keyValues.put(new Attribute(Attribute.Property.indoorVentilation, Attribute.Datatype.string), indoorVentilation);
+		keyValues.put(new Attribute(Attribute.Property.eventCapacity, Attribute.Datatype.number), null);
+		keyValues.put(new Attribute(Attribute.Property.maskEnforcement, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.socialDistancing, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.tempChecks, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.handSanitizerAvailable, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.CDCApprovedCleaning, Attribute.Datatype.bool), booleans);
+		keyValues.put(new Attribute(Attribute.Property.eventDate, Attribute.Datatype.number), null);
 	}
 	
 	public static Attribute getAttribute(Attribute.Property field) {
