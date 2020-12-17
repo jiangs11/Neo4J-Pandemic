@@ -56,7 +56,10 @@ Preliminary ideas on reporting. Mockups of reports/graphs
 - Infection algorithm – look at current state and determine who is infected, how infections people are.?  PROBABLITY?  Length, masks,   ED, CHRISTINA
 
 OVERALL GOAL:
-Cycle through every non-infected Person node, determine if the person should become infected, and, if so, add the label InfectedPerson. Create static methods infectThruNetwork() and infectThruEvent()
+Cycle through every non-infected Person node, determine if the person should become infected, and, if so, add the label InfectedPerson. Create static methods 
+* infectThruNetwork(Session ses) 
+* infectThruEvent(Session ses, Date date)
+
 DUE FOR 10/28:
 A list of attributes for Persons and Events that you would want to use.
  
