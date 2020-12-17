@@ -9,7 +9,7 @@ import java.util.Date;
 public class Events { 
 
 	private String eventName;
-	private long eventDate;
+	private Date eventDate;
 	private EventType eventType;
 	private int eventCapacity;
 	private EventPlace venue;
@@ -32,7 +32,7 @@ public class Events {
 	 * @param mask
 	 * @param dist
 	 */
-	public Events(String name, long date, EventType type, int cap, EventPlace place,
+	public Events(String name, Date date, EventType type, int cap, EventPlace place,
 			Boolean mask, Boolean dist, Boolean temp, Boolean hand, Boolean cdc) {
 		eventName = name;
 		eventDate = date;
@@ -62,7 +62,7 @@ public class Events {
 	 * @param hand
 	 * @param cdc
 	 */
-	public Events(String name, long date, EventType type, int cap, EventPlace place, VentilationType indoor,
+	public Events(String name, Date date, EventType type, int cap, EventPlace place, VentilationType indoor,
 			Boolean mask, Boolean dist, Boolean temp, Boolean hand, Boolean cdc) {
 		
 		eventName = name;
