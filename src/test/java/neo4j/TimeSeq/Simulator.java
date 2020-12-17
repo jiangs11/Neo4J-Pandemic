@@ -67,15 +67,26 @@ public class Simulator {
 			Graph infect = new Graph(infected, 
 					"Covid-19 Infections per day in 2020",
 	                "Day",
-	                "of Deaths",
-	                ".\\Charts\\infectDaily.png");
+	                "of Cases",
+	                ".\\Charts\\infectDaily.png", 0);
 
 			Graph death = new Graph(dead, 
 					"Deaths per Day as a Result of Covid-19 in 2020",
 	                "Day",
 	                "of Deaths",
-	                ".\\Charts\\deadDaily.png");
+	                ".\\Charts\\deadDaily.png", 0);
 			
+			Graph infectCumm = new Graph(infected, 
+					"Total Covid-19 Infections in 2020",
+	                "Day",
+	                "of Cases",
+	                ".\\Charts\\infectCummulative.png", 1);
+
+			Graph deathCumm = new Graph(dead, 
+					"Deaths as a Result of Covid-19 in 2020",
+	                "Day",
+	                "of Deaths",
+	                ".\\Charts\\deadCummulative.png", 1);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
