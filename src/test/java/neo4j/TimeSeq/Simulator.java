@@ -54,7 +54,7 @@ public class Simulator {
 			System.out.println(data[0] +" " + data[1]);
 			if (i > 0) {
 				dead[i] = data[1] - sumArray(dead, i);
-				infected[i] = data[0] - sumArray(infected, i) + data[1];
+				infected[i] = data[0];
 			}
 			else {
 				infected[i] = data[0];
