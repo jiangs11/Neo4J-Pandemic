@@ -89,11 +89,11 @@ public class Events {
 		this.eventName = eventName;
 	}
 
-	public long getEventDate() {
+	public Date getEventDate() {
 		return eventDate;
 	}
 
-	public void setEventDate(long eventDate) {
+	public void setEventDate(Date eventDate) {
 		this.eventDate = eventDate;
 	}
 
