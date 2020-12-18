@@ -351,8 +351,8 @@ public class NeoOperations {
 			tx = session.beginTransaction();
 			StringBuilder cmd = new StringBuilder(); 
 
-			cmd.append("MATCH (i:infected:Person)-[r:KNOWS]-(h:Person) ");
-			cmd.append("where not(h:infected) "); 
+			cmd.append("MATCH (i:InfectedPerson)-[r:KNOWS]-(h:Person) ");
+			cmd.append("where not(h:InfectedPerson) "); 
 			cmd.append("and  (i.alive = true) and (h.alive = true) ");
 			cmd.append("return ID(i), i.name,  i.maskUsage, i.masks, i.jobType, i.socialGuidelines, i.handWashing, i.hermit, "); 
 			cmd.append("ID(h), h.name,  h.maskUsage, h.masks, h.jobType, h.socialGuidelines, h.handWashing, h.hermit, "); 
@@ -408,7 +408,7 @@ public class NeoOperations {
 			tx = session.beginTransaction();
 			StringBuilder cmd = new StringBuilder(); 
 			cmd.append("match(h:Person) where (ID(h) in [").append(idFilter).append("]) ");
-			cmd.append("set h:infected, h.date_infected = " + date.toString());
+			cmd.append("set h:InfectedPerson, h.date_infected = " + date.toString());
 			tx.run(cmd.toString());
 			tx.commit(); 
 		} catch (Exception e) {
@@ -421,7 +421,7 @@ public class NeoOperations {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			tx.run("match (n:Person:infected) remove n:infected");
+			tx.run("match (n:InfectedPerson) remove n:InfectedPerson");
 			tx.commit(); 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -454,7 +454,7 @@ public class NeoOperations {
 			Result result = tx.run("MATCH (p:Person) return id(p), rand() as rand order by rand ASC Limit 1");
 			currentRecord = result.next(); 
 			Integer id = Integer.parseInt(currentRecord.get("id(p)").toString());
-			result = tx.run("MATCH (n) WHERE id(n) = " + id + " SET n:infected RETURN n.name, labels(n)");
+			result = tx.run("MATCH (n) WHERE id(n) = " + id + " SET n:InfectedPerson RETURN n.name, labels(n)");
 			currentRecord = result.next(); 
 			String name = currentRecord.get("n.name").toString();
 			tx.commit(); 
@@ -527,7 +527,7 @@ public class NeoOperations {
 			buffer.append("CREATE (n:Event ");
 			buffer.append("{ name : '").append(event.getEventName()).append("', ");
 			buffer.append("project : 'pandemic', ");
-			buffer.append("eventDate : '").append(event.getEventDate().getTime()).append("', ");
+			buffer.append("eventDate : '").append(event.getEventDate()).append("', ");
 			buffer.append("eventType : '").append(event.getEventTypeString()).append("', ");
 			buffer.append("eventCapacity : ").append(event.getEventCapacity()).append(", ");
 			buffer.append("venue : '").append(event.getVenueString()).append("', ");
@@ -583,7 +583,7 @@ public class NeoOperations {
 			try {
 				tx = session.beginTransaction();
 				StringBuilder cmd = new StringBuilder(); 
-				cmd.append("MATCH (i:Person:infected)-[r:ATTENDS]->(e:Event) "); 
+				cmd.append("MATCH (i:InfectedPerson)-[r:ATTENDS]->(e:Event) "); 
 				cmd.append("WHERE e.eventDate = '").append(date.getTime()).append("' ");
 				cmd.append("RETURN distinct ID(e), e.name, e.eventDate, e.eventType, e.eventCapacity, e.venue, e.indoorVentilation, e.maskEnforcement, ");
 				cmd.append("e.socialDistancing, e.tempChecks, e.handSanitizerAvailable, e.CDCApprovedCleaning");
@@ -599,7 +599,7 @@ public class NeoOperations {
 					event.setEventName(currentEventRecord.get("e.name").toString().replace('"', ' ').trim());
 					long eventDateTime = Long.parseLong(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
 					event.setEventDate(new Date(eventDateTime));
-					//	event.setEventDate(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
+					event.setEventDate(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
 					event.setEventType(currentEventRecord.get("e.eventType").toString().replace('"', ' ').trim());
 					event.setEventCapacity(Integer.parseInt(currentEventRecord.get("e.eventCapacity").toString()));
 					event.setVenueFromString(currentEventRecord.get("e.venue").toString().replace('"', ' ').trim());
