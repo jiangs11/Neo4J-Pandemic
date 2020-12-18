@@ -408,7 +408,7 @@ public class NeoOperations {
 			tx = session.beginTransaction();
 			StringBuilder cmd = new StringBuilder(); 
 			cmd.append("match(h:Person) where (ID(h) in [").append(idFilter).append("]) ");
-			cmd.append("set h:InfectedPerson, h.date_infected = " + date.toString());
+			cmd.append("set h:InfectedPerson, h.date_infected = '" + date.getTime() + "'");
 			tx.run(cmd.toString());
 			tx.commit(); 
 		} catch (Exception e) {
@@ -477,7 +477,7 @@ public class NeoOperations {
 		int[] results = new int[2];
 		try {
 
-			Result result = session.run("match(n:InfectedPerson) where n.date = " + date.toString() + " return count(n) as count");
+			Result result = session.run("match(n:InfectedPerson) where n.date = '" + date.getTime() + "' return count(n) as count");
 			results[0] = Integer.parseInt(result.next().get("count").toString());
 			result = session.run("match(n:DeceasedPerson) return count(n) as count");
 			results[1] = Integer.parseInt(result.next().get("count").toString());
@@ -599,7 +599,7 @@ public class NeoOperations {
 					event.setEventName(currentEventRecord.get("e.name").toString().replace('"', ' ').trim());
 					long eventDateTime = Long.parseLong(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
 					event.setEventDate(new Date(eventDateTime));
-					event.setEventDate(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
+					//event.setEventDate(currentEventRecord.get("e.eventDate").toString().replace('"', ' ').trim());
 					event.setEventType(currentEventRecord.get("e.eventType").toString().replace('"', ' ').trim());
 					event.setEventCapacity(Integer.parseInt(currentEventRecord.get("e.eventCapacity").toString()));
 					event.setVenueFromString(currentEventRecord.get("e.venue").toString().replace('"', ' ').trim());

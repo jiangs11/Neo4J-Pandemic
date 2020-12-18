@@ -18,8 +18,9 @@ public class Simulator {
 	 * methods created by other groups. Will also call the 
 	 * graphing methods.
 	 * @param pids The id's for the nodes we created
+	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		String bolt1 = "bolt://54.237.9.240:7687";  // Main DB Server
 		String bolt2 = "bolt://54.90.41.128:7687";  // Dedicated neo server
 		String bolt3 = "bolt://localhost:7687"; 	// Localhost
@@ -39,6 +40,7 @@ public class Simulator {
 		int[] dead = new int[365];
 		int[] data = null;
 		Date date = null;
+		NeoOperations.infectFirstPerson(ses);
 		for (int i = 0; i < 365; i++){
 			date = Date.from(LocalDate.of(2020,1,1).plusDays(i-1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 			EventBuilder.generateEvent("Event number " + i, date, 10);
@@ -51,7 +53,6 @@ public class Simulator {
 			Killer.getInfectedPerson_attributes(ses);
 			
 			data = NeoOperations.getData(ses, date);
-			System.out.println(data[0] +" " + data[1]);
 			if (i > 0) {
 				dead[i] = data[1] - sumArray(dead, i);
 				infected[i] = data[0];
@@ -60,6 +61,8 @@ public class Simulator {
 				infected[i] = data[0];
 				dead[i] = data[1];
 			}
+			
+			Thread.sleep(1000);
 		}
 
 
